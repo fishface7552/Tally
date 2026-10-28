@@ -71,7 +71,7 @@ button:disabled{cursor:default}
 .nav-back{display:flex;align-items:center;gap:2px;border:0;background:none;color:var(--accent);padding:8px 4px;justify-self:start;max-width:100%;min-width:0}
 .nav-back span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nav-back svg{width:13px;height:21px;flex:none}
-.nav-title{font-weight:600;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw}
+.nav-title{font-weight:600;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:min(40vw,240px)}
 .nav-right{justify-self:end}
 .nav-btn{border:0;background:none;color:var(--accent);padding:8px 0;font-weight:600}
 .nav-btn:disabled{color:var(--label3)}
@@ -409,17 +409,44 @@ body.noscroll{overflow:hidden}
 .tok.leading .tok-score{background:var(--gold);color:#FFFFFF}
 .tok-name{font-size:11px;font-weight:600;max-width:64px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--label)}
 .track{position:relative;padding:8px 0;background:var(--card)}
-.lane{position:relative;height:var(--lane);margin:0 30px 0 10px}
+.lane{position:relative;height:var(--lane);margin:0 6px;overflow:hidden}
 .lane:nth-child(odd){background:var(--lane1)} .lane:nth-child(even){background:var(--lane2)}
 .lane + .lane{border-top:1.5px dashed var(--sep)}
-.track .tok{top:50%;left:calc(var(--x,0) * (100% - 104px));transform:translateY(-50%);grid-template-columns:auto auto;grid-template-areas:"av sc" "av nm";align-items:center;column-gap:6px;row-gap:1px;justify-items:start;width:auto}
-.track .tok .avatar{grid-area:av}
-.track .tok .tok-score{grid-area:sc}
-.track .tok .tok-name{grid-area:nm;max-width:60px}
-.finish{position:absolute;top:8px;bottom:8px;right:8px;width:18px;border-radius:3px;background:repeating-conic-gradient(var(--label) 0 25%,var(--card) 0 50%) 0 0/9px 9px;opacity:.85}
-.startline{position:absolute;top:8px;bottom:8px;left:8px;width:3px;border-radius:2px;background:var(--accent);opacity:.5}
-.flag{position:absolute;left:50%;top:calc(28.1% + 2px);transform:translate(-1px,-100%);width:2px;height:28px;background:var(--label2);z-index:0}
-.flag i{position:absolute;left:2px;top:0;width:20px;height:13px;background:var(--gold);clip-path:polygon(0 0,100% 50%,0 100%)}
+.lane::before{content:"";position:absolute;top:0;bottom:0;left:29px;width:2px;background:var(--accent);opacity:.45}
+.lane::after{content:"";position:absolute;top:0;bottom:0;left:calc(86% - 5px);width:10px;background:repeating-conic-gradient(var(--label) 0 25%,var(--card) 0 50%) 0 0/10px 10px;opacity:.8}
+.track .tok{top:50%;left:calc(var(--x,0) * (86% - 30px));transform:translateY(-50%);width:60px;z-index:1}
+.track .tok .tok-score{position:absolute;top:-3px;left:calc(50% + 9px);z-index:1;padding:0 6px;font-size:11px;line-height:15px}
+.track .tok .avatar{width:36px;height:36px}
+.track .tok .tok-name{max-width:58px;font-size:10px}
+.track.sm .tok .avatar{width:30px;height:30px;font-size:11px}
+.offarrow{position:absolute;left:4px;top:50%;transform:translateY(-50%);z-index:2;display:flex;align-items:center;gap:4px;background:var(--red);color:#FFFFFF;border-radius:999px;padding:4px 9px 4px 7px;font-size:11px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.2);animation:nudge 1.2s ease-in-out infinite}
+.offarrow b{font-family:var(--rounded);font-variant-numeric:tabular-nums}
+@keyframes nudge{50%{transform:translate(-3px,-50%)}}
+/* hanging over lava: a deliberately dark scene in both themes */
+.hang{position:relative;height:clamp(340px,52vh,440px);overflow:hidden;background:radial-gradient(120% 70% at 50% 100%,#7A1E08 0%,#3A130B 45%,#1A0F0D 100%)}
+.beam{position:absolute;left:0;right:0;top:4%;height:14px;z-index:1;box-shadow:0 4px 10px rgba(0,0,0,.55);
+  background:radial-gradient(circle,#2A201C 0 2px,transparent 2.6px) 0 50%/28px 14px repeat-x,linear-gradient(#7D6B61,#43362F)}
+.hp{position:absolute;top:0;bottom:0;left:var(--cx);width:0}
+.hp .rope{position:absolute;left:-1px;top:calc(4% + 10px);width:2px;height:calc(var(--ty,22%) - 4% - 2px);background:repeating-linear-gradient(#D7B48C 0 5px,#9A7650 5px 8px);transition:height var(--ms) cubic-bezier(.45,.05,.3,1)}
+.hang .tok{top:var(--ty,22%);left:0;transform:translateX(-50%);width:auto;z-index:2}
+.hang .tok-name{color:#FFFFFF;text-shadow:0 1px 3px #000;font-size:11px}
+.hang .tok-score{background:#FFFFFF;color:#1C1C1E}
+.hang .tok .avatar{box-shadow:0 0 0 3px #1A0F0D,0 4px 12px rgba(0,0,0,.5)}
+.hang .tok.leading .avatar{box-shadow:0 0 0 3px var(--gold),0 0 16px rgba(255,190,60,.55)}
+.hang .tok.winner .avatar{box-shadow:0 0 0 4px #FFC24A,0 0 26px 6px rgba(255,200,80,.7)}
+.hang.sm .tok .avatar{width:30px;height:30px;font-size:11px}
+.hang.sm .tok-name{max-width:42px;font-size:10px}
+.hp.fell .tok{top:104%;opacity:0;transform:translateX(-50%) rotate(26deg) scale(.7);transition:top .75s cubic-bezier(.55,0,1,.45),opacity .35s .45s,transform .75s ease-in}
+.hp.fell .rope{height:16px;opacity:.6;transition:height .18s,opacity .18s}
+.rp-stage.instant .tok,.rp-stage.instant .rope{transition:none!important}
+.pool{position:absolute;left:0;right:0;bottom:0;height:20%;z-index:3;background:linear-gradient(#FF9A2E,#F0530F 22%,#B32507 60%,#5E0F00);box-shadow:0 -14px 40px 6px rgba(255,98,20,.5)}
+.pool-surf{position:absolute;left:0;right:0;top:-9px;height:18px;background:radial-gradient(circle at 50% 100%,#FFB13B 0 9px,transparent 10px) 0 0/22px 18px repeat-x;animation:surf 2.4s linear infinite}
+@keyframes surf{to{background-position:22px 0}}
+.pool .bubbles i{right:auto}
+.splash{position:absolute;top:80%;z-index:4;width:0;height:0}
+.splash i{position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:#FFC24A;animation:drop .8s ease-out forwards}
+.splash i:nth-child(1){--dx:-26px;--dy:-34px}.splash i:nth-child(2){--dx:-10px;--dy:-48px}.splash i:nth-child(3){--dx:4px;--dy:-54px}.splash i:nth-child(4){--dx:18px;--dy:-42px}.splash i:nth-child(5){--dx:30px;--dy:-26px}
+@keyframes drop{40%{transform:translate(var(--dx),var(--dy));opacity:1}100%{transform:translate(calc(var(--dx) * 1.4),10px);opacity:0}}
 .rp-call{min-height:52px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--display);font-size:20px;font-weight:600;line-height:1.25;text-wrap:balance;padding:0 8px}
 .rp-call.lead{color:var(--gold)}
 .rp-call.pop{animation:pop .35s ease-out}
@@ -486,6 +513,121 @@ body.noscroll{overflow:hidden}
 @keyframes scorch{0%{box-shadow:0 0 0 3px #FF5A1F,0 0 18px 6px rgba(255,90,31,.8);transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-2px)}100%{transform:none}}
 .rp-bar.hot i{background:linear-gradient(90deg,#C42A06,#FF8A1F)}
 
+/* game icons */
+.gicon svg{width:22px;height:22px}
+.gicon.lg svg{width:38px;height:38px}
+.gicon.xl{width:104px;height:104px;border-radius:24px;font-size:40px}
+.gicon.xl svg{width:60px;height:60px}
+.gicon.logo{overflow:hidden}
+.gicon.logo img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar.team{font-family:var(--rounded);font-weight:800}
+.hero-links{display:flex;gap:18px;justify-content:center}
+.heart-i{width:22px;height:22px;color:var(--red);margin-left:3px;vertical-align:-2px}
+/* builder */
+.cr-hero{display:grid;justify-items:center;gap:14px;padding:22px 0 16px}
+.cr-hero .gicon{box-shadow:0 10px 30px rgba(0,0,0,.18)}
+input.cr-name{width:100%;text-align:center;font-family:var(--display);font-size:28px;font-weight:700;color:var(--label);background:transparent;border:0;border-bottom:2px solid var(--sep);border-radius:0;padding:6px 0;outline:0}
+input.cr-name:focus{border-bottom-color:var(--accent)}
+.sym-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:10px 0}
+.sym-btn{aspect-ratio:1;max-width:100%;border:0;border-radius:12px;background:var(--card);color:var(--c);display:grid;place-items:center;padding:0}
+.sym-btn svg{width:58%;height:58%}
+.sym-btn.on{background:var(--c);color:#FFFFFF;--symbg:var(--c)}
+.sym-btn.on svg{--symbg:var(--c)}
+.cr-sw{background:var(--card);border-radius:12px;margin-top:10px;justify-content:flex-start;gap:12px}
+.cr-sw .sw{width:36px;height:36px}
+.kind-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.kind{border:0;border-radius:14px;background:var(--card);color:var(--label);text-align:left;padding:12px;display:grid;gap:4px;box-shadow:inset 0 0 0 2px transparent;transition:box-shadow .15s}
+.kind b{font-size:16px}
+.kind > span:last-child{font-size:13px;color:var(--label2);line-height:1.3}
+.kind-ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:var(--tint);color:var(--accent);margin-bottom:4px}
+.kind-ic svg{width:20px;height:20px}
+.kind.on{box-shadow:inset 0 0 0 2px var(--accent)}
+.kind:disabled{opacity:.4}
+.cr-set{margin-top:10px}
+.word-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.word-top .field.right{flex:0 0 130px;width:130px}
+.chip.sm{padding:5px 11px;font-size:13px;background:var(--fill)}
+.chip.sm.on{background:var(--accent)}
+.item-row .seg button{font-size:12px;padding:6px 2px}
+.cr-num{flex:0 0 90px;width:90px}
+.eq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.eq{border:0;border-radius:12px;background:var(--card);color:var(--label2);display:grid;justify-items:center;gap:6px;padding:12px 4px;font-size:12px;font-weight:600;text-align:center;box-shadow:inset 0 0 0 2px transparent;--dicepip:var(--card)}
+.eq svg{width:26px;height:26px}
+.eq.on{color:var(--accent);background:var(--tint);box-shadow:inset 0 0 0 2px var(--accent);--dicepip:var(--tint)}
+.rule-edit{display:grid;gap:6px}
+.re-l{font-size:13px;font-weight:600;color:var(--label2);margin:8px 4px 0}
+.rule-edit textarea{background:var(--card);border-radius:12px;min-height:0}
+/* requirements */
+.need-keys{display:flex;flex-wrap:wrap;gap:8px}
+.need-key{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--gc,var(--accent));background:var(--gcs,var(--tint));border-radius:999px;padding:6px 12px 6px 8px;--dicepip:var(--card)}
+.need-key svg{width:18px;height:18px}
+.have{margin:0 0 14px}
+.have-h{font-size:13px;font-weight:600;color:var(--label2);margin:0 4px 8px}
+.have-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-left:calc(-1 * var(--gut-l));margin-right:calc(-1 * var(--gut-r));padding:2px var(--gut-r) 4px var(--gut-l)}
+.have-row::-webkit-scrollbar{display:none}
+.have-chip{flex:none;display:flex;align-items:center;gap:6px;border:0;border-radius:999px;background:var(--card);color:var(--label);font-size:14px;font-weight:500;padding:7px 13px 7px 9px;--dicepip:var(--card)}
+.have-chip svg{width:18px;height:18px;color:var(--label2)}
+.have-chip.on{background:var(--accent);color:var(--onaccent);--dicepip:var(--accent)}
+.have-chip.on svg{color:var(--onaccent)}
+.feat-tag{font-size:12px;font-weight:700;color:var(--gold);background:var(--goldbg);border-radius:999px;padding:5px 10px;flex:none}
+.info-actions.one{grid-template-columns:1fr}
+/* round entry */
+.tap-row{min-height:56px}
+.tap-mark{min-width:40px;height:30px;border-radius:15px;border:1.5px solid var(--label3);display:grid;place-items:center;font-family:var(--rounded);font-weight:700;font-size:14px;color:var(--onaccent);padding:0 8px}
+.tap-mark.on{background:var(--accent);border-color:var(--accent)}
+.pcard.out{opacity:.6}
+/* teams */
+.team-pick{display:flex;gap:6px}
+.tchip{width:34px;height:34px;border-radius:50%;border:0;background:var(--fill);color:var(--label2);font-family:var(--rounded);font-weight:800;font-size:15px}
+.tchip.on{background:var(--tc);color:#FFFFFF}
+/* timer */
+.timer-card{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:14px;padding:10px 12px;margin-bottom:12px}
+.tm-ring{--p:1;width:58px;height:58px;border-radius:50%;flex:none;display:grid;place-items:center;background:conic-gradient(var(--accent) calc(var(--p) * 360deg),var(--fill) 0)}
+.tm-ring span{width:48px;height:48px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-family:var(--rounded);font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+.timer-card.up{background:color-mix(in srgb,var(--red) 14%,var(--card));animation:tmflash .5s ease-in-out 4}
+.timer-card.up .tm-ring{background:var(--red)}
+.timer-card.up .t1{color:var(--red);font-weight:700}
+@keyframes tmflash{50%{transform:scale(1.02)}}
+
+/* account */
+.acct-card{display:flex;align-items:center;gap:14px;width:100%;border:0;border-radius:14px;padding:14px 16px;margin-top:10px;text-align:left;color:var(--label);background:var(--card)}
+.acct-card .grow{display:grid;gap:2px;min-width:0}
+.acct-card b{font-size:17px}
+.acct-card .grow > span{font-size:13px;color:var(--label2);line-height:1.35}
+.acct-card .avatar{width:44px;height:44px;font-size:16px}
+.acct-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#FFFFFF;background:linear-gradient(135deg,#34AADC,#007AFF);flex:none;--acic:#1A84F0}
+.acct-ic svg{width:28px;height:28px}
+.acct-ic.lg{width:76px;height:76px;border-radius:20px}
+.acct-ic.lg svg{width:46px;height:46px}
+.sync-line{display:flex;align-items:center;gap:6px}
+.dot-ok{width:8px;height:8px;border-radius:50%;background:var(--green);flex:none}
+.si-hero{display:grid;justify-items:center;gap:8px;text-align:center;padding:8px 8px 18px}
+.si-hero h2{margin:6px 0 0;font-family:var(--display);font-size:26px;font-weight:700;text-wrap:balance;line-height:1.15}
+.si-hero p{margin:0;color:var(--label2);font-size:15px;line-height:1.4;max-width:34ch}
+.si-hero.sm{justify-items:start;text-align:left;padding:4px 4px 14px}
+.perks{display:grid;gap:14px;padding:4px 4px 6px}
+.perk{display:flex;gap:14px;align-items:flex-start}
+.perk div{display:grid;gap:2px}
+.perk b{font-size:16px}
+.perk div span{font-size:14px;color:var(--label2);line-height:1.35}
+.perk-ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none;background:var(--tint);color:var(--accent)}
+.perk-ic svg{width:21px;height:21px}
+.perk-ic.sm{width:32px;height:32px}
+.perk-ic.sm svg{width:20px;height:20px;--acic:var(--tint)}
+.btn.sso-apple{background:var(--label);color:var(--bg)}
+.btn svg{flex:none}
+input.code-in{display:block;width:100%;font-family:var(--rounded);font-size:36px;font-weight:700;letter-spacing:12px;text-align:center;padding:14px 0 14px 12px;border:0;border-radius:14px;background:var(--sheetcard);color:var(--label);outline:0;font-variant-numeric:tabular-nums}
+input.code-in:focus{box-shadow:0 0 0 2px var(--accent)}
+.code-in::placeholder{color:var(--label3)}
+.spinner{width:44px;height:44px;border-radius:50%;border:4px solid var(--fill);border-top-color:var(--accent);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.done-ic{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#FFFFFF;font-size:34px;font-weight:700}
+.you{display:inline-block;vertical-align:2px;margin-left:8px;font-size:11px;font-weight:700;color:var(--onaccent);background:var(--accent);border-radius:5px;padding:2px 7px;flex:none}
+.you.ok{background:var(--green)}
+.code-chip{border:0;border-radius:9px;background:var(--fill);color:var(--label);font-family:var(--rounded);font-size:17px;font-weight:700;letter-spacing:1.5px;padding:8px 12px;flex:none}
+.preview-note{text-align:center;margin-top:14px}
+.pill.ghost:disabled{opacity:.6}
+
 /* dealer */
 .deal-card{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:12px;padding:10px 12px 10px 16px;margin-bottom:12px;box-shadow:inset 3px 0 0 var(--accent)}
 .deal-card .t1 b{font-weight:600}
@@ -509,6 +651,7 @@ body.noscroll{overflow:hidden}
 .mini-seg{width:150px;font-family:var(--font);font-weight:400}
 .mini-seg .seg button{padding:5px 6px;font-size:12px}
 
+@media (prefers-reduced-motion:reduce){.spinner{animation-duration:3s}.offarrow,.pool-surf,.splash i{animation:none}.timer-card.up{animation:none}}
 @media (prefers-reduced-motion:reduce){.sheet,.scrim,.switch,.switch::after,.replay,.rp-bar i,.lava{transition:none}.rp-call.pop,.lrow.flash,.lava::after,.bubbles i,.tok.hit .avatar{animation:none}}
 </style>
 
@@ -563,7 +706,7 @@ const TEMPLATES = [
 ];
 
 let S = null;
-const ui = {tab:'games', stack:[], statFilter:'all', setup:null, round:null, draft:null, dtab:null, box:null, pColor:null, pPhoto:null, editPid:null, confirm:null, libTab:'classics', libq:'', libSort:'popular', info:null, cr:null, sheetBack:null};
+const ui = {tab:'games', stack:[], statFilter:'all', setup:null, round:null, draft:null, dtab:null, box:null, pColor:null, pPhoto:null, editPid:null, confirm:null, libTab:'classics', libq:'', have:[], libSort:'popular', info:null, cr:null, sheetBack:null};
 const KEY = 'tally.v1';
 const DAY = 864e5;
 
@@ -571,8 +714,8 @@ const DAY = 864e5;
 const allTemplates = () => TEMPLATES.concat((S && S.customs) || []);
 const tmpl = id => allTemplates().find(t => t.id === id) || {id, name:'Game', short:'?', color:'#8E8E93', blurb:''};
 const player = id => S.players.find(p => p.id === id);
-const pname = id => player(id)?.name || 'Former player';
-const pcolor = id => player(id)?.color || '#8E8E93';
+const pname = id => (TEAMS[id] && TEAMS[id].name) || player(id)?.name || 'Former player';
+const pcolor = id => (TEAMS[id] && TEAMS[id].color) || player(id)?.color || '#8E8E93';
 const initials = n => (String(n).trim().split(/\s+/).map(w => w[0]).join('').slice(0,2) || '?').toUpperCase();
 const fmt = n => n < 0 ? '−' + Math.abs(n) : String(n);
 const signed = n => n > 0 ? '+' + n : fmt(n);
@@ -580,7 +723,7 @@ const ordinal = n => n + (['th','st','nd','rd'][(n%100 > 10 && n%100 < 14) ? 0 :
 const num = v => { const n = parseInt(String(v ?? '').replace('−','-'), 10); return Number.isFinite(n) ? n : 0; };
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const avg = (a, f) => a.length ? a.reduce((s,x) => s + f(x), 0) / a.length : null;
-const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+const plural = (n, w) => `${n} ${n === 1 ? w : pluralWord(w)}`;
 const listNames = ids => { const n = ids.map(pname); return n.length < 3 ? n.join(' and ') : n.slice(0,-1).join(', ') + ' and ' + n[n.length-1]; };
 const anyOne = (g, D, k) => g.players.find(p => D[p] && D[p][k]);
 // detailed rounds for one player (rounds entered in Totals-only mode are skipped)
@@ -922,7 +1065,7 @@ const ENGINES = {
     }
   }
 };
-const eng = g => ENGINES[g.tid] || {};
+const eng = g => engOf(g.tid);
 const isFeat = tid => !!ENGINES[tid];
 
 /* ---------- game model ---------- */
@@ -946,7 +1089,9 @@ function newGame(tid, pids, o = {}){
     target: o.target !== undefined ? o.target : (t.target ?? null), low: o.low !== undefined ? o.low : !!t.low,
     maxRounds: tid === 'wizard' ? Math.floor(60 / pids.length) : (t.rounds || null), quick: !!o.quick};
   if(tid === 'sushi' && o.menu) g.menu = JSON.parse(JSON.stringify(o.menu));
-  if(o.dealer != null && o.dealer >= 0 && pids.length > 1) g.dealer = o.dealer % pids.length;
+  if(t.kind === 'lives') g.lives = t.lives || 3;
+  if(o.teams && o.teams.filter(m => m.length).length >= 2) makeTeams(g, o.teams);
+  else if(o.dealer != null && o.dealer >= 0 && pids.length > 1) g.dealer = o.dealer % pids.length;
   if(E.card && !g.quick){ g.card = {}; pids.forEach(p => g.card[p] = {}); }
   return g;
 }
@@ -968,7 +1113,7 @@ function endInfo(g){
   const E = eng(g);
   if(E.end){ const e = E.end(g); if(e) return e; if(g.card) return null; }
   if(!g.rounds.length) return null;
-  if(g.maxRounds && g.rounds.length >= g.maxRounds) return {msg:`All ${g.maxRounds} ${(E.unit || 'round').toLowerCase()}s are done.`};
+  if(g.maxRounds && g.rounds.length >= g.maxRounds) return {msg:`All ${plural(g.maxRounds, (E.unit || 'round').toLowerCase())} are done.`};
   if(g.target != null){
     const tot = totals(g); const hit = g.players.filter(p => tot[p] >= g.target).sort((a,b) => tot[b] - tot[a]);
     if(hit.length) return {msg:`${pname(hit[0])} reached ${fmt(tot[hit[0]])}.`};
@@ -1007,9 +1152,9 @@ function fmtStat(s){
 }
 
 /* ---------- storage + sample data ---------- */
-function save(){ RV++; try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function save(){ RV++; indexTeams(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 function load(){
-  try{ const raw = localStorage.getItem(KEY); if(raw){ S = JSON.parse(raw); if(S && S.players){ migrate(); return; } } }catch(e){}
+  try{ const raw = localStorage.getItem(KEY); if(raw){ S = JSON.parse(raw); if(S && S.players){ migrate(); indexTeams(); return; } } }catch(e){}
   S = seed(); save();
 }
 const SKILL = {p0:1.12, p1:1.18, p2:0.92, p3:1.0, p4:1.05};
@@ -1086,14 +1231,14 @@ function seedGames(players){
 
 /* ---------- player stats ---------- */
 function playerStats(pid, f='all'){
-  const gs = doneGames(f).filter(g => g.players.includes(pid));
+  const gs = doneGames(f).filter(g => inGame(g, pid));
   let wins = 0, placeSum = 0, best = null; const byT = {}; const results = [];
   gs.forEach(g => {
-    const st = standings(g), me = st.find(r => r.pid === pid); const won = me.place === 1;
+    const sd = sideOf(g, pid), st = standings(g), me = st.find(r => r.pid === sd); const won = me.place === 1;
     if(won) wins++; placeSum += me.place;
     const b = byT[g.tid] || (byT[g.tid] = {played:0, wins:0}); b.played++; if(won) b.wins++;
     results.push({g, place:me.place, n:st.length, total:me.total, won});
-    if(!g.low) g.rounds.forEach(r => { const v = r.scores[pid]; if(v != null && (!best || v > best.v)) best = {v, g}; });
+    if(!g.low) g.rounds.forEach(r => { const v = r.scores[sd]; if(v != null && (!best || v > best.v)) best = {v, g}; });
   });
   let cur = 0; for(const r of results){ if(r.won) cur++; else break; }
   let bestStreak = 0, run = 0; results.slice().reverse().forEach(r => { run = r.won ? run + 1 : 0; bestStreak = Math.max(bestStreak, run); });
@@ -1110,12 +1255,13 @@ function ratings(f = 'all'){
   const key = f + '|' + RV; if(RC[f] && RC[f].key === key) return RC[f];
   const R = {}, G = {}, hist = {}, byGame = {};
   S.games.filter(g => g.status === 'done' && (f === 'all' || g.tid === f)).sort((a, b) => a.ended - b.ended).forEach(g => {
-    const st = standings(g).filter(r => player(r.pid)); if(st.length < 2) return;
+    // In team games every member takes the team's finish; teammates aren't compared with each other
+    const st = expandSides(g, standings(g)).filter(r => player(r.pid)); if(new Set(st.map(r => r.side)).size < 2) return;
     const d = {};
     st.forEach(a => {
-      const ra = R[a.pid] ?? RATE0; let sum = 0;
-      st.forEach(b => { if(a === b) return; const rb = R[b.pid] ?? RATE0, exp = 1 / (1 + Math.pow(10, (rb - ra) / 400)); sum += (a.place < b.place ? 1 : a.place > b.place ? 0 : .5) - exp; });
-      d[a.pid] = ((G[a.pid] || 0) < PROV ? 48 : 32) * sum / (st.length - 1);
+      const ra = R[a.pid] ?? RATE0; let sum = 0, opp = 0;
+      st.forEach(b => { if(a === b || a.side === b.side) return; opp++; const rb = R[b.pid] ?? RATE0, exp = 1 / (1 + Math.pow(10, (rb - ra) / 400)); sum += (a.place < b.place ? 1 : a.place > b.place ? 0 : .5) - exp; });
+      d[a.pid] = opp ? ((G[a.pid] || 0) < PROV ? 48 : 32) * sum / opp : 0;
     });
     st.forEach(a => { R[a.pid] = (R[a.pid] ?? RATE0) + d[a.pid]; G[a.pid] = (G[a.pid] || 0) + 1; (hist[a.pid] = hist[a.pid] || []).push({g, r:R[a.pid], d:d[a.pid]}); });
     byGame[g.id] = d;
@@ -1160,9 +1306,9 @@ function openRateInfo(){
   openSheet(h);
 }
 function rivals(pid){
-  const gs = doneGames('all').filter(g => g.players.includes(pid)); const out = {};
-  gs.forEach(g => { const st = standings(g), me = st.find(r => r.pid === pid);
-    st.forEach(o => { if(o.pid === pid || !player(o.pid)) return; const r = out[o.pid] || (out[o.pid] = {pid:o.pid, n:0, ahead:0, behind:0});
+  const gs = doneGames('all').filter(g => inGame(g, pid)); const out = {};
+  gs.forEach(g => { const st = expandSides(g, standings(g)), me = st.find(r => r.pid === pid);
+    st.forEach(o => { if(o.pid === pid || o.side === me.side || !player(o.pid)) return; const r = out[o.pid] || (out[o.pid] = {pid:o.pid, n:0, ahead:0, behind:0});
       r.n++; if(me.place < o.place) r.ahead++; else if(me.place > o.place) r.behind++; }); });
   return Object.values(out).sort((a,b) => b.n - a.n);
 }
@@ -1176,19 +1322,26 @@ const ICON = {
   book:'<svg class="ibook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.3 5 7.7 4.3 4 4.5v13c3.7-.2 6.3.5 8 2 1.7-1.5 4.3-2.2 8-2v-13c-3.7-.2-6.3.5-8 2z"/><path d="M12 6.5v13"/></svg>',
   play:'<svg viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M5 3.2v11.6c0 .7.8 1.1 1.4.7l8.6-5.8c.5-.3.5-1.1 0-1.4L6.4 2.5C5.8 2.1 5 2.5 5 3.2z"/></svg>',
   crown:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 7.5l4.6 3.6L12 4l4.4 7.1L21 7.5l-1.8 10.2H4.8z"/><rect x="4.8" y="18.8" width="14.4" height="2.2" rx="1.1"/></svg>',
+  cloud:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 19a5 5 0 0 1-.6-10A6.5 6.5 0 0 1 19 9.6 4.7 4.7 0 0 1 18.3 19z"/><path d="M12 10.5v6M9.5 13l2.5-2.5 2.5 2.5" fill="none" stroke="var(--acic,#FFFFFF)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>',
+  phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M11 18h2"/></svg>',
+  people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.6c2.8.2 5 2.2 5 5"/></svg>',
+  mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 6.5l8.5 6 8.5-6"/></svg>',
   trophy:'<svg viewBox="0 0 36 36" fill="currentColor" aria-hidden="true"><path d="M10 4h16v9a8 8 0 0 1-16 0z"/><path d="M10 7H5v3a6 6 0 0 0 6 6M26 7h5v3a6 6 0 0 1-6 6" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="16" y="20" width="4" height="7"/><rect x="11" y="27" width="14" height="4" rx="1.5"/></svg>'
 };
 const avatarRaw = (name, color, cls='', photo) => photo
   ? `<span class="avatar photo ${cls}" aria-hidden="true"><img src="${photo}" alt=""></span>`
   : `<span class="avatar ${cls}" style="background:${color}" aria-hidden="true">${esc(initials(name))}</span>`;
-const avatar = (pid, cls='') => avatarRaw(pname(pid), pcolor(pid), cls, player(pid)?.photo);
-const gicon = (t, cls='') => `<span class="gicon ${cls}" style="background:${t.color}" aria-hidden="true">${esc(t.short)}</span>`;
+const avatar = (pid, cls='') => TEAMS[pid] ? avatarRaw(TEAMS[pid].short, TEAMS[pid].color, cls + ' team') : avatarRaw(pname(pid), pcolor(pid), cls, player(pid)?.photo);
+const gicon = (t, cls='') => t.logo && /^data:image\/(jpeg|png|webp);base64,/.test(t.logo) ? `<span class="gicon logo ${cls}" style="background:${t.color}" aria-hidden="true"><img src="${t.logo}" alt=""></span>`
+  : t.sym && SYMS[t.sym] ? `<span class="gicon sym ${cls}" style="background:${t.color}" aria-hidden="true">${symSvg(t.sym, t.color)}</span>`
+  : `<span class="gicon ${cls}" style="background:${t.color}" aria-hidden="true">${esc(t.short)}</span>`;
 const avStack = ids => `<span class="stack">${ids.slice(0,4).map(id => avatar(id,'sm')).join('')}</span>`;
 const navbar = (title, right='') => `<div class="navbar"><button class="nav-back" data-a="back">${ICON.back}<span>${esc(backLabel())}</span></button><div class="nav-title">${esc(title)}</div><div class="nav-right">${right}</div></div>`;
 function titleOf(e){
   if(!e) return {players:'Players', games:'Games', stats:'Statistics', settings:'Settings'}[ui.tab];
   if(e.type === 'player') return pname(e.id); if(e.type === 'pgame') return tmpl(e.tid).name;
-  if(e.type === 'library') return 'Library'; if(e.type === 'rules') return tmpl(e.id).name;
+  if(e.type === 'library') return 'Library'; if(e.type === 'create') return ui.cr && ui.cr.edit ? 'Edit' : 'New Game'; if(e.type === 'rules') return tmpl(e.id).name;
   const g = S.games.find(x => x.id === e.id); return g ? tmpl(g.tid).name : 'Game';
 }
 const backLabel = () => titleOf(ui.stack[ui.stack.length - 2]);
@@ -1200,9 +1353,9 @@ function roundsTable(g){
   const body = g.rounds.map((r,i) => {
     const vals = g.players.map(p => r.scores[p] || 0);
     const best = g.low ? Math.min(...vals) : Math.max(...vals);
-    return `<tr class="tap" data-a="editround:${g.id}:${i}"><th>${unit} ${i+1}</th>${g.players.map((p,j) => `<td class="${vals[j] === best && g.players.length > 1 ? 'hi' : ''}">${fmt(vals[j])}${E.cell ? E.cell(r, p) : ''}</td>`).join('')}</tr>`;
+    return `<tr class="tap" data-a="editround:${g.id}:${i}"><th>${esc(unit)} ${i+1}</th>${g.players.map((p,j) => `<td class="${vals[j] === best && g.players.length > 1 && !E.disp ? 'hi' : ''}">${E.disp ? E.disp(vals[j], r, p) : fmt(vals[j])}${E.cell ? E.cell(r, p) : ''}</td>`).join('')}</tr>`;
   }).join('');
-  return `<div class="tbl-wrap"><table><thead><tr><th></th>${head}</tr></thead><tbody>${body}</tbody><tfoot><tr><th>Total</th>${g.players.map(p => `<td>${fmt(tot[p])}</td>`).join('')}</tr></tfoot></table></div>`;
+  return `<div class="tbl-wrap"><table><thead><tr><th></th>${head}</tr></thead><tbody>${body}</tbody><tfoot><tr><th>${E.totalDisp ? 'Left' : 'Total'}</th>${g.players.map(p => `<td>${E.totalDisp ? E.totalDisp(g, p) : fmt(tot[p])}</td>`).join('')}</tr></tfoot></table></div>`;
 }
 function legend(g){
   return `<p class="foot">Tap a ${(eng(g).unit || 'round').toLowerCase()} to edit it.</p>`;
@@ -1273,6 +1426,7 @@ function viewPlay(id){
   h += `<div class="play-head"><div class="eyebrow">${esc(eyebrow)}${g.quick && E.fields ? ' · Totals only' : ''}</div></div>`;
   if(end) h += `<div class="banner"><div class="grow"><b>${esc(end.msg)}</b> That ends the game.</div><button class="pill" data-a="finish:${g.id}">Finish</button></div>`;
   const dl = !end && !g.card ? dealerAt(g, n) : null;
+  if(E.timer && !end) h += timerCard(g, E.timer, unit);
   if(dl){
     const note = dealNote(g, n), nx = dealerAt(g, n + 1);
     h += `<div class="deal-card">${avatar(dl)}<div class="grow"><div class="t1"><b>${esc(pname(dl))}</b> deals</div><div class="t2">${esc([note, `Next: ${pname(nx)}`].filter(Boolean).join(' \u00b7 '))}</div></div><button class="pill ghost" data-a="dealer:${g.id}">Change</button></div>`;
@@ -1282,14 +1436,14 @@ function viewPlay(id){
     const sub = E.sub ? E.sub(g, r.pid, r.total) : g.card ? `${yCalc(g, r.pid).filled} of 13 boxes` : d == null ? 'No rounds yet' : `Last ${unit.toLowerCase()} <span class="delta ${d === 0 ? '' : good ? 'up' : 'down'}">${signed(d)}</span>`;
     const frac = E.progress ? E.progress(g, r.pid) : g.card ? yCalc(g, r.pid).filled / 13 : g.target != null ? r.total / g.target : null;
     const prog = frac != null ? `<div class="prog ${g.low && !E.progress ? 'low' : ''}"><i style="width:${(clamp(frac, 0, 1) * 100).toFixed(1)}%"></i></div>` : '';
-    return `<div class="score-row"><span class="place ${r.place === 1 && hasPlay(g) ? 'first' : ''}">${r.place}</span>${avatar(r.pid)}<div class="grow"><div class="t1">${esc(pname(r.pid))}${r.pid === dl ? '<span class="dbadge">Dealer</span>' : ''}</div><div class="t2">${sub}</div>${prog}</div><span class="total">${E.big ? E.big(g, r.pid) : fmt(r.total)}</span></div>`;
+    return `<div class="score-row"><span class="place ${r.place === 1 && hasPlay(g) ? 'first' : ''}">${r.place}</span>${avatar(r.pid)}<div class="grow"><div class="t1">${esc(pname(r.pid))}${r.pid === dl ? '<span class="dbadge">Dealer</span>' : ''}</div><div class="t2">${TEAMS[r.pid] && TEAMS[r.pid].members.length > 2 ? esc(TEAMS[r.pid].members.map(m => pname(m).split(' ')[0]).join(', ')) + ' \u00b7 ' : ''}${sub}</div>${prog}</div><span class="total">${E.big ? E.big(g, r.pid) : fmt(r.total)}</span></div>`;
   }).join('') + `</div>`;
   if(g.card){
     h += `<h2 class="sh">Scorecard <small>Tap a box to score it</small></h2>${scorecard(g, true)}`;
   } else {
     const full = g.maxRounds && n >= g.maxRounds;
-    h += `<div class="stackgap"><button class="btn primary" data-a="round:${g.id}" ${full || (end && E.end) ? 'disabled' : ''}>${ICON.plus}Score ${unit} ${n + 1}</button></div>`;
-    if(n) h += `<h2 class="sh">${unit}s <button class="link-btn" data-a="undo:${g.id}">Undo last ${unit.toLowerCase()}</button></h2>${roundsTable(g)}${legend(g)}`;
+    h += `<div class="stackgap"><button class="btn primary" data-a="round:${g.id}" ${full || (end && E.end) ? 'disabled' : ''}>${ICON.plus}${esc(E.scoreLabel ? E.scoreLabel(g, n) : `Score ${unit} ${n + 1}`)}</button></div>`;
+    if(n) h += `<h2 class="sh">${esc(E.units || unit + 's')} <button class="link-btn" data-a="undo:${g.id}">Undo last ${unit.toLowerCase()}</button></h2>${roundsTable(g)}${legend(g)}`;
   }
   h += `<div class="stackgap"><button class="btn danger" style="background:var(--card)" data-a="discard:${g.id}">Discard Game</button></div>`;
   return h;
@@ -1301,7 +1455,7 @@ function viewGame(id){
   let h = navbar(t.name, `<button class="nav-btn icon" data-a="rules:${g.tid}" aria-label="Rules">${ICON.book}</button>`);
   h += `<div class="hero">${gicon(t,'lg')}<h2>${esc(t.name)}</h2><p>${d.toLocaleDateString(undefined,{weekday:'long', month:'long', day:'numeric'})} · ${dur(mins(g))}${g.card ? '' : ' · ' + plural(g.rounds.length, (E.unit || 'round').toLowerCase())}</p></div>`;
   h += `<div class="group">` + st.map(r => `<button class="row" data-a="push:player:${r.pid}" ${player(r.pid) ? '' : 'disabled'}>${avatar(r.pid)}<div class="grow"><div class="t1">${esc(pname(r.pid))}</div>${E.sub ? `<div class="t2">${E.sub(g, r.pid, r.total)}</div>` : ''}</div><span class="badge ${r.place === 1 ? 'win' : ''}">${ordinal(r.place)}</span><span class="meta" style="min-width:3ch;text-align:right">${fmt(r.total)}</span></button>`).join('') + `</div>`;
-  h += g.card ? `<h2 class="sh">Scorecard <small>Tap a box to change it</small></h2>${scorecard(g, true, false)}` : `<h2 class="sh">${E.unit || 'Round'}s</h2>${roundsTable(g)}${legend(g)}`;
+  h += g.card ? `<h2 class="sh">Scorecard <small>Tap a box to change it</small></h2>${scorecard(g, true, false)}` : `<h2 class="sh">${esc(E.units || (E.unit || 'Round') + 's')}</h2>${roundsTable(g)}${legend(g)}`;
   h += `<div class="stackgap"><button class="btn primary" data-a="rematch:${g.id}">Play Again</button>${replayable(g) ? `<button class="btn secondary" data-a="replay:${g.id}">${ICON.play}Watch Replay</button>` : ''}<button class="btn danger" style="background:var(--card)" data-a="delgame:${g.id}">Delete Game</button></div>`;
   return h;
 }
@@ -1312,7 +1466,7 @@ function viewPlayers(){
   const RT = ratings();
   const rows = S.players.map(p => ({p, s:playerStats(p.id), r:RT.r[p.id]})).sort((a,b) => (b.r ?? -1) - (a.r ?? -1) || a.p.name.localeCompare(b.p.name));
   h += `<div class="group" style="margin-top:12px">` + rows.map(({p,s,r}) => { const hh = RT.hist[p.id], tr = r != null ? tierOf(r) : null;
-    return `<button class="row" data-a="push:player:${p.id}">${avatar(p.id)}<div class="grow"><div class="t1">${esc(p.name)}</div><div class="t2">${s.played ? `${s.played} games \u00b7 ${Math.round(s.pct*100)}% won${s.cur > 1 ? ` \u00b7 ${s.cur} in a row` : ''}` : 'No games yet'}</div></div>${r != null ? `<span class="rate-mini"><b>${rnum(r)}</b><span style="color:${tr[2]}">${RT.games[p.id] < PROV ? 'Provisional' : tr[1]}</span></span>` : ''}${ICON.chev}</button>`; }).join('') + `</div>`;
+    return `<button class="row" data-a="push:player:${p.id}">${avatar(p.id)}<div class="grow"><div class="t1">${esc(p.name)}${p.id === meId() ? '<span class="you">You</span>' : ''}</div><div class="t2">${s.played ? `${s.played} games \u00b7 ${Math.round(s.pct*100)}% won${s.cur > 1 ? ` \u00b7 ${s.cur} in a row` : ''}` : 'No games yet'}</div></div>${r != null ? `<span class="rate-mini"><b>${rnum(r)}</b><span style="color:${tr[2]}">${RT.games[p.id] < PROV ? 'Provisional' : tr[1]}</span></span>` : ''}${ICON.chev}</button>`; }).join('') + `</div>`;
   h += `<p class="foot">Players are ranked by <button class="inline-link" style="font-size:13px;padding:0" data-a="rateinfo">skill rating</button>.${S.sample ? ' These are sample players; erase them in Settings.' : ''}</p>`;
   return h;
 }
@@ -1321,7 +1475,7 @@ function viewPlayer(pid){
   const p = player(pid), s = playerStats(pid);
   let h = navbar(p.name, `<button class="nav-btn" data-a="editPlayer:${pid}">Edit</button>`);
   const since = new Date(p.created).toLocaleDateString(undefined, {month:'long', year:'numeric'});
-  h += `<div class="hero">${avatar(pid,'xl')}<h2>${esc(p.name)}</h2><p>Playing since ${since}</p></div>`;
+  h += `<div class="hero">${avatar(pid,'xl')}<h2>${esc(p.name)}</h2><p>Playing since ${since}${pid === meId() ? ' \u00b7 Linked to your account' : ''}</p></div>`;
   if(!s.played) return h + `<div class="empty" style="padding-top:12px"><p>${esc(p.name)} hasn’t finished a game yet. Stats appear here after the first one.</p><button class="btn primary" data-a="tab:games">Start a Game</button></div>` + delBtn(pid);
   h += ratingCard(pid);
   h += `<div class="tiles" style="margin-top:10px">
@@ -1339,21 +1493,21 @@ function viewPlayer(pid){
 const delBtn = pid => `<div class="stackgap"><button class="btn danger" style="background:var(--card)" data-a="delplayer:${pid}">Delete Player</button></div>`;
 
 function viewPGame(pid, tid){
-  const t = tmpl(tid), E = ENGINES[tid], s = playerStats(pid, tid);
+  const t = tmpl(tid), E = engOf(tid), s = playerStats(pid, tid);
   const st = E && E.stats ? E.stats(pid, s.games) : null;
   let h = navbar(t.name);
   h += `<div class="hero"><div class="duo">${avatar(pid,'lg')}${gicon(t,'lg')}</div><h2>${esc(pname(pid))}</h2><p>${esc(t.name)} · ${s.wins} of ${plural(s.played, 'game')} won · ${Math.round(s.pct*100)}%</p></div>`;
   h += ratingCard(pid, tid);
   if(st) h += `<div class="tiles" style="margin-top:10px">` + st.map(x => `<div class="tile"><div class="v ${typeof x.v === 'string' ? 'txt' : ''}">${fmtStat(x)}</div><div class="k">${esc(x.label)}${x.sub ? ` · ${esc(x.sub)}` : ''}</div></div>`).join('') + `</div>`;
-  else if(E) h += `<p class="foot" style="text-align:center">Detailed stats appear after a ${esc(t.name)} game scored in Detailed mode.</p>`;
+  else if(isFeat(tid)) h += `<p class="foot" style="text-align:center">Detailed stats appear after a ${esc(t.name)} game scored in Detailed mode.</p>`;
   h += `<div class="tiles" style="margin-top:10px"><div class="tile"><div class="v">${s.avgPlace.toFixed(1)}</div><div class="k">Average finish</div></div><div class="tile"><div class="v">${s.bestStreak}</div><div class="k">Best win streak</div></div></div>`;
   h += `<h2 class="sh">Games</h2><div class="group">` + s.results.map(r => `<button class="row" data-a="push:game:${r.g.id}">${avStack(r.g.players)}<div class="grow"><div class="t1">${rel(r.g.ended)}</div><div class="t2">Scored ${fmt(r.total)}</div></div><span class="badge ${r.won ? 'win' : ''}">${ordinal(r.place)} of ${r.n}</span>${ICON.chev}</button>`).join('') + `</div>`;
   return h;
 }
 
 function insights(tid, gs){
-  const E = ENGINES[tid]; if(!E || !E.stats) return '';
-  const rows = S.players.map(p => ({p, st:E.stats(p.id, gs.filter(g => g.players.includes(p.id)))})).filter(x => x.st);
+  const E = engOf(tid); if(!E || !E.stats) return '';
+  const rows = S.players.map(p => ({p, st:E.stats(p.id, gs.filter(g => inGame(g, p.id)))})).filter(x => x.st);
   if(!rows.length) return '';
   const labels = rows[0].st;
   let h = `<h2 class="sh">${esc(tmpl(tid).name)} Insights <small>gold = best</small></h2><div class="tbl-wrap"><table class="ins"><thead><tr><th></th>${rows.map(r => `<th>${avatar(r.p.id,'sm')}${esc(r.p.name)}</th>`).join('')}</tr></thead><tbody>`;
@@ -1409,7 +1563,7 @@ function records(f, gs, lb){
     if(played) out.push(rec('Most games played', played.s.played, esc(played.p.name), `push:player:${played.p.id}`));
     if(top) out.push(rec('Most played game', esc(tmpl(top[0]).name), plural(top[1], 'game'), `filter:${top[0]}`));
   } else {
-    const t = tmpl(f), E = ENGINES[f] || {}, unit = (E.unit || 'Round').toLowerCase(), lowG = gs[0] && gs[0].low, phase = f === 'phase10';
+    const t = tmpl(f), E = engOf(f), unit = (E.unit || 'Round').toLowerCase(), lowG = gs[0] && gs[0].low, phase = f === 'phase10' || ['wins','order','lives'].includes(E.kind);
     let bestR = null, bestG = null, margin = null, close = null, fast = null;
     gs.forEach(g => {
       if(!phase) g.rounds.forEach(r => g.players.forEach(p => { if(r.scores[p] == null) return; const v = r.scores[p]; if(!bestR || v > bestR.v) bestR = {v, p, g}; }));
@@ -1417,7 +1571,7 @@ function records(f, gs, lb){
       if(!phase) st.forEach(r => { if(!bestG || (g.low ? r.total < bestG.v : r.total > bestG.v)) bestG = {v:r.total, p:r.pid, g}; });
       if(st.length > 1 && !phase){ const m = Math.abs(st[0].total - st[1].total);
         if(!margin || m > margin.v) margin = {v:m, p:st[0].pid, g}; if(m > 0 && (!close || m < close.v)) close = {v:m, p:st[0].pid, g}; }
-      if(phase && (!fast || g.rounds.length < fast.v)) fast = {v:g.rounds.length, p:st[0].pid, g};
+      if(f === 'phase10' && (!fast || g.rounds.length < fast.v)) fast = {v:g.rounds.length, p:st[0].pid, g};
     });
     if(bestR) out.push(rec(lowG ? `Worst ${unit}` : `Highest ${unit}`, fmt(bestR.v), `${esc(pname(bestR.p))} \u00b7 ${rel(bestR.g.ended)}`, `push:game:${bestR.g.id}`));
     if(bestG) out.push(rec(lowG ? 'Lowest final score' : 'Highest final score', fmt(bestG.v), `${esc(pname(bestG.p))} \u00b7 ${rel(bestG.g.ended)}`, `push:game:${bestG.g.id}`));
@@ -1437,7 +1591,7 @@ function render(){
   if(top && top.type === 'game' && S.games.find(g => g.id === top.id).status === 'active') top.type = 'play';
   if(top && top.type === 'play' && S.games.find(g => g.id === top.id).status === 'done') top.type = 'game';
   const html = !top ? (ui.tab === 'players' ? viewPlayers() : ui.tab === 'stats' ? viewStats() : ui.tab === 'settings' ? viewSettings() : viewGames())
-    : top.type === 'library' ? viewLibrary() : top.type === 'rules' ? navbar(tmpl(top.id).name) + rulesBody(tmpl(top.id))
+    : top.type === 'create' ? viewCreate() : top.type === 'library' ? viewLibrary() : top.type === 'rules' ? navbar(tmpl(top.id).name) + rulesBody(tmpl(top.id))
     : top.type === 'player' ? viewPlayer(top.id) : top.type === 'pgame' ? viewPGame(top.id, top.tid) : top.type === 'play' ? viewPlay(top.id) : viewGame(top.id);
   $('#view').innerHTML = html;
   document.querySelectorAll('.tab').forEach(b => { b.classList.toggle('on', b.dataset.tab === ui.tab); b.setAttribute('aria-current', b.dataset.tab === ui.tab ? 'page' : 'false'); });
@@ -1466,7 +1620,7 @@ function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = fals
 /* setup */
 function openSetup(tid, picks){
   const t = tid === 'new' ? null : tmpl(tid);
-  ui.setup = {tid, picks:picks ? picks.slice() : [], target:t ? (t.target ?? '') : 100, low:t ? !!t.low : false, name:'', quick:!!SET().quick, deal:DEALT.includes(tid), first:null, version:'original', menu:JSON.parse(JSON.stringify(SUSHI_PARTY))};
+  ui.setup = {tid, picks:picks ? picks.slice() : [], target:t ? (t.target ?? '') : 100, low:t ? !!t.low : false, name:'', quick:!!SET().quick, deal:DEALT.includes(tid) || !!(t && t.deal), first:null, teamN:2, team:{}, version:'original', menu:JSON.parse(JSON.stringify(SUSHI_PARTY))};
   openSheet(setupHtml());
 }
 function setupRange(){
@@ -1479,10 +1633,11 @@ function menuOk(){ const u = ui.setup; return SUSHI_GROUPS.every(([g,,n]) => u.m
 function setupHtml(){
   const u = ui.setup, isNew = u.tid === 'new', t = isNew ? null : tmpl(u.tid), E = t ? ENGINES[t.id] : null;
   const [mn, mx] = setupRange();
-  const ready = u.picks.length >= mn && u.picks.length <= mx && (!isNew || u.name.trim()) && (u.tid !== 'sushi' || u.version === 'original' || menuOk());
+  const teamsOk = !(t && t.teams) || (u.picks.length >= 2 && Array.from({length:u.teamN || 2}, (_, i) => i).every(i => u.picks.some((p, j) => (u.team[p] ?? j % (u.teamN || 2)) === i)));
+  const ready = u.picks.length >= mn && u.picks.length <= mx && (!isNew || u.name.trim()) && (u.tid !== 'sushi' || u.version === 'original' || menuOk()) && teamsOk;
   let h = sheetHead('New Game', 'Start', !ready, 'startGame');
   h += isNew ? `<div class="hero" style="padding-top:8px"><span class="gicon lg add">${ICON.plus}</span></div><div class="group plain"><div class="row"><input class="field" type="text" id="setName" placeholder="Game name, e.g. Crib" value="${esc(u.name)}" autocomplete="off"></div></div>`
-             : `<div class="hero" style="padding-top:8px">${gicon(t,'lg')}<h2>${esc(t.name)}</h2><button class="inline-link" data-a="rules:${t.id}:setup">${ICON.book}Read the rules</button></div>`;
+             : `<div class="hero" style="padding-top:8px">${gicon(t,'lg')}<h2>${esc(t.name)}</h2><div class="hero-links"><button class="inline-link" data-a="rules:${t.id}:setup">${ICON.book}Read the rules</button>${isOwn(t) ? `<button class="inline-link" data-a="editgame:${t.id}">Edit game</button>` : ''}</div></div>`;
   if(E){
     h += `<div class="seg-wrap"><span class="lbl">Scoring</span>${seg([['detail','Detailed'],['quick','Totals only']], u.quick ? 'quick' : 'detail', 'squick')}</div>`;
   }
@@ -1495,8 +1650,8 @@ function setupHtml(){
       });
     }
   }
-  const showTarget = isNew || (t.target != null && (!t.feat || t.id === 'blitz'));
-  if(showTarget) h += `<div class="group plain" style="margin-top:${isNew ? 10 : 0}px"><div class="row"><label class="grow" for="setTarget">${u.low ? 'Game ends at' : 'Target score'}</label><input class="field right" style="flex:0 0 90px;width:90px" type="text" inputmode="numeric" id="setTarget" placeholder="None" value="${esc(u.target)}" autocomplete="off"></div>${isNew ? `<div class="row"><label class="grow" for="setLow">Lowest score wins</label><input class="switch" type="checkbox" id="setLow" ${u.low ? 'checked' : ''}></div>` : ''}</div><div style="height:12px"></div>`;
+  const showTarget = isNew || (t.target != null && (!t.feat || t.id === 'blitz') && (!t.kind || ['points','sheet','wins'].includes(t.kind)));
+  if(showTarget) h += `<div class="group plain" style="margin-top:${isNew ? 10 : 0}px"><div class="row"><label class="grow" for="setTarget">${t && t.kind === 'wins' ? 'Round wins needed' : u.low ? 'Game ends at' : 'Target score'}</label><input class="field right" style="flex:0 0 90px;width:90px" type="text" inputmode="numeric" id="setTarget" placeholder="None" value="${esc(u.target)}" autocomplete="off"></div>${isNew ? `<div class="row"><label class="grow" for="setLow">Lowest score wins</label><input class="switch" type="checkbox" id="setLow" ${u.low ? 'checked' : ''}></div>` : ''}</div><div style="height:12px"></div>`;
   const count = u.picks.length, wiz = u.tid === 'wizard' && count >= 3 && count <= 6 ? ` · ${Math.floor(60 / count)} rounds` : '';
   const yz = !isNew && t.id === 'yahtzee';
   h += `<h2 class="sh">Players <small>${count ? `${count} selected${wiz}${u.deal ? ' \u00b7 seating order' : ''}` : mn === mx ? `${mn} players` : `${mn}–${mx} players`}</small></h2><div class="group">`;
@@ -1504,7 +1659,15 @@ function setupHtml(){
     return `<button class="row" data-a="pick:${p.id}" aria-pressed="${i >= 0}">${avatar(p.id)}<div class="grow t1">${esc(p.name)}</div><span class="check ${i >= 0 ? 'on' : ''}">${i >= 0 ? i + 1 : ''}</span></button>`; }).join('');
   h += `<div class="row"><span class="avatar" style="background:var(--fill);color:var(--accent)">${ICON.plus.replace('<svg','<svg width="16" height="16"')}</span><input class="field" type="text" id="quickName" placeholder="Add new player" autocomplete="off" autocapitalize="words"><button class="add-btn" data-a="quickAdd">Add</button></div></div>`;
   if(count > mx) h += `<p class="hint danger">${esc(t.name)} plays up to ${mx}. Deselect ${count - mx}.</p>`;
-  if(!yz){
+  if(t && t.teams && count >= 2){
+    const n = clamp(u.teamN || 2, 2, Math.min(4, count)); u.teamN = n;
+    u.picks.forEach((p, i) => { if(u.team[p] == null || u.team[p] >= n) u.team[p] = i % n; });
+    h += `<h2 class="sh">Teams</h2>${seg([2,3,4].filter(x => x <= Math.max(2, Math.min(4, count))).map(x => [String(x), `${x} teams`]), String(n), 'teamn')}`;
+    h += `<div class="group" style="margin-top:10px">${u.picks.map(p => `<div class="row">${avatar(p)}<div class="grow t1">${esc(pname(p))}</div><span class="team-pick">${Array.from({length:n}, (_, i) => `<button class="tchip ${u.team[p] === i ? 'on' : ''}" style="--tc:${TEAM_COLORS[i]}" data-a="teamset:${p}:${i}" aria-label="Team ${'ABCD'[i]}">${'ABCD'[i]}</button>`).join('')}</span></div>`).join('')}</div>`;
+    const empty = Array.from({length:n}, (_, i) => i).filter(i => !u.picks.some(p => u.team[p] === i));
+    if(empty.length) h += `<p class="hint danger">Every team needs at least one player.</p>`;
+  }
+  if(!yz && !(t && t.teams)){
     if(u.first && !u.picks.includes(u.first)) u.first = null;
     const first = u.first || u.picks[0];
     h += `<div class="group" style="margin-top:16px"><div class="row"><label class="grow" for="setDeal"><div class="t1">Track the dealer</div></label><input class="switch" type="checkbox" id="setDeal" ${u.deal ? 'checked' : ''}></div>`;
@@ -1520,7 +1683,8 @@ function startGame(fromGame){
   if(fromGame){
     // A rematch carries on the deal from where the last game stopped
     const keep = fromGame.players.filter(p => player(p)), nextD = fromGame.dealer != null ? dealerAt(fromGame, fromGame.rounds.length) : null;
-    g = newGame(fromGame.tid, keep, {target:fromGame.target, low:fromGame.low, quick:fromGame.quick, menu:fromGame.menu, dealer:fromGame.dealer != null ? Math.max(0, keep.indexOf(nextD)) : null});
+    const tg = fromGame.teams ? Object.values(fromGame.teams).map(tm => tm.members.filter(p => player(p))) : null;
+    g = newGame(fromGame.tid, tg ? tg.flat() : keep, {target:fromGame.target, low:fromGame.low, quick:fromGame.quick, menu:fromGame.menu, dealer:fromGame.dealer != null ? Math.max(0, keep.indexOf(nextD)) : null, teams:tg});
   } else {
     const u = ui.setup; let tid = u.tid; const tv = String(u.target ?? '').trim(); const target = tv === '' ? null : num(tv);
     if(tid === 'new'){
@@ -1530,7 +1694,8 @@ function startGame(fromGame){
       S.customs.push(c); tid = c.id;
     }
     const t = tmpl(tid);
-    g = newGame(tid, u.picks, {target: (t.target != null || tid.startsWith('c_')) ? target : null, low:u.low, quick:isFeat(tid) && u.quick, menu: tid === 'sushi' && u.version === 'party' ? u.menu : null, dealer:u.deal && tid !== 'yahtzee' ? Math.max(0, u.picks.indexOf(u.first || u.picks[0])) : null});
+    g = newGame(tid, u.picks, {target: (t.target != null || tid.startsWith('c_')) ? target : null, low:u.low, quick:isFeat(tid) && u.quick, menu: tid === 'sushi' && u.version === 'party' ? u.menu : null, dealer:u.deal && tid !== 'yahtzee' && !t.teams ? Math.max(0, u.picks.indexOf(u.first || u.picks[0])) : null,
+      teams:t.teams ? Array.from({length:u.teamN || 2}, (_, i) => u.picks.filter(p => u.team[p] === i)) : null});
     closeSheet();
   }
   S.games.push(g); save();
@@ -1540,6 +1705,7 @@ function startGame(fromGame){
 /* rounds: one generic sheet driven by each game's fields.
    ui.round = {gid, idx, mode}: idx is null for a new round, or the index of the round being edited. */
 const QUICK = [{k:'pts', type:'num', label:'Points'}];
+const quickFor = E => [{k:'pts', type:'num', label:E.ptsWord || 'Points'}];
 const realG = () => S.games.find(x => x.id === ui.round.gid);
 // The game as it stood just before the round being entered or edited
 const RG = () => { const g = realG(); return ui.round.idx == null ? g : Object.assign({}, g, {rounds:g.rounds.slice(0, ui.round.idx)}); };
@@ -1547,7 +1713,7 @@ const roundMode = g => (ui.round && ui.round.mode) || ((eng(g).fields && !g.quic
 function fieldsFor(g, pid, mode){
   const E = eng(g), i = g.rounds.length;
   if(mode === 'detail') return E.fields.call(E, g, pid, i);
-  return E.quickFields ? E.quickFields.call(E, g, pid, i) : QUICK;
+  return E.quickFields ? E.quickFields.call(E, g, pid, i) : quickFor(E);
 }
 function computeRound(g, mode){
   const E = eng(g), i = g.rounds.length;
@@ -1561,6 +1727,8 @@ function fieldHtml(f, pid){
   return `<div class="frow${w}"><div class="fl"><label for="${id}">${esc(f.label)}</label>${sub}</div><div class="stepper"><button type="button" data-a="st:${pid}:${f.k}:-1" aria-label="Less">−</button><input type="text" inputmode="numeric" id="${id}" data-p="${pid}" data-k="${f.k}" value="${num(v)}" autocomplete="off"><button type="button" data-a="st:${pid}:${f.k}:1" aria-label="More">+</button></div></div>`;
 }
 function pcard(g, pid, mode){
+  const F = fieldsFor(g, pid, mode);
+  if(!F.length) return `<div class="group pcard out"><div class="row">${avatar(pid)}<div class="grow"><div class="t1">${esc(pname(pid))}</div><div class="t2">${esc(eng(g).outMsg ? eng(g).outMsg(g, pid) : 'Out')}</div></div><span class="badge">Out</span></div></div>`;
   return `<div class="group pcard"><div class="row phead">${avatar(pid)}<div class="grow t1">${esc(pname(pid))}</div><span class="live" data-live="${pid}"></span></div><div class="fgrid">${fieldsFor(g, pid, mode).map(f => fieldHtml(f, pid)).join('')}</div></div>`;
 }
 // Rebuild what was typed for a saved round, so it can be edited
@@ -1587,11 +1755,13 @@ function openRound(gid, idx){
 function roundHtml(){
   const g = RG(), E = eng(g), i = g.rounds.length, mode = roundMode(g), t = tmpl(g.tid), editing = ui.round.idx != null;
   let h = sheetHead(`${editing ? 'Edit ' : ''}${E.unit || 'Round'} ${i + 1}`, 'Save', false, 'saveRound');
-  h += `<div class="sheet-tools">${E.fields ? seg([['detail','Detailed'],['quick','Totals only']], mode, 'rmode') : '<span></span>'}<button class="tool-btn" data-a="rules:${g.tid}:round" aria-label="Rules">${ICON.book}</button></div>`;
+  h += `<div class="sheet-tools">${E.fields && !E.noQuick ? seg([['detail','Detailed'],['quick','Totals only']], mode, 'rmode') : '<span></span>'}<button class="tool-btn" data-a="rules:${g.tid}:round" aria-label="Rules">${ICON.book}</button></div>`;
   const dlr = dealerAt(g, i), lbl = [E.roundLabel && mode === 'detail' ? E.roundLabel(g, i) : '', dlr ? `${pname(dlr)} dealt` : ''].filter(Boolean).join(' \u00b7 ');
   if(lbl) h += `<div class="eyebrow" style="margin:0 4px 10px">${esc(lbl)}</div>`;
   h += `<div class="rsum" id="rsum"></div>`;
-  if(E.tabs && mode === 'detail'){
+  if(E.entry === 'tap'){
+    h += `<div class="group">${g.players.map(p => { const m = E.tapMark(ui.draft[p]); return `<button class="row tap-row" data-a="tap:${p}" aria-pressed="${!!m}">${avatar(p)}<div class="grow t1">${esc(pname(p))}</div><span class="tap-mark ${m ? 'on' : ''}">${esc(m)}</span></button>`; }).join('')}</div>`;
+  } else if(E.tabs && mode === 'detail'){
     h += `<div class="chips wrap" style="margin-bottom:10px">${g.players.map(p => `<button class="chip ${p === ui.dtab ? 'on' : ''}" data-a="dtab:${p}">${esc(pname(p))}<b data-live="${p}"></b></button>`).join('')}</div>`;
     h += pcard(g, ui.dtab, mode);
     const nx = g.players[g.players.indexOf(ui.dtab) + 1];
@@ -1628,6 +1798,7 @@ function saveRound(){
   const round = {scores:res.scores, raw:JSON.parse(JSON.stringify(ui.draft))}; if(res.detail) round.detail = res.detail; if(mode === 'quick' && eng(g).fields) round.q = true;
   if(idx == null) g.rounds.push(round); else { g.rounds[idx] = round; rescoreFrom(g, idx + 1); }
   if(g.status === 'active') touch(g);
+  if(TMR.gid === g.id) resetTimer(g.id, TMR.total);
   save(); closeSheet(); render(); sfx('save'); buzz(12);
   if(idx != null) return toast(`${unit} ${idx + 1} updated`);
   const e = endInfo(g); if(e) toast(e.msg + ' Tap Finish when you’re ready.');
@@ -1752,13 +1923,26 @@ document.addEventListener('click', e => {
     case 'theme': setSetting('theme', b); render(); break;
     case 'defq': setSetting('quick', b === 'quick'); render(); break;
     case 'pro': openPro(); break;
+    case 'signin': openSignIn(); break;
+    case 'account': if($('#sheetWrap').hidden) openAccount(); else redrawSheet(accountHtml()); break;
+    case 'sim': ui.si.method = b; ui.si.step = b; redrawSheet(signInHtml()); setTimeout(() => { const f = $('#siName') || $('#siEmail'); if(f && window.matchMedia('(pointer:fine)').matches) f.focus(); }, 50); break;
+    case 'sinext': siNext(); break;
+    case 'siback': siBack(); break;
+    case 'sipick': ui.si.pid = b; redrawSheet(signInHtml()); break;
+    case 'syncnow': { el.disabled = true; el.textContent = 'Syncing\u2026'; $('#acBarWrap').hidden = false; runSync(() => { redrawSheet(accountHtml()); render(); toast('Synced'); }); break; }
+    case 'relink': openRelink(); break;
+    case 'setme': S.account.pid = b; save(); redrawSheet(accountHtml()); render(); toast(`You\u2019re ${pname(b)}`); break;
+    case 'copycode': copyText(inviteCode(), 'Invite code copied'); break;
+    case 'invite': copyText(`Join me on Tally! Enter my invite code ${inviteCode()} to link your stats.`, `Invite for ${pname(b)} copied. Send it to them.`); break;
+    case 'signout': confirmSheet('Sign out?', 'Your games stay on this phone. Sign in again any time to sync.', 'Sign Out', () => { S.account = null; save(); render(); toast('Signed out'); }); break;
+    case 'delacct': confirmSheet('Delete your account?', 'Your account and its online backup will be deleted. This can\u2019t be undone. Games on this phone stay.', 'Delete Account', () => { S.account = null; save(); render(); toast('Account deleted'); }); break;
     case 'proplan': ui.proPlan = b; redrawSheet(proHtml()); break;
     case 'probuy': toast('Purchases aren\u2019t connected in this prototype.'); break;
     case 'backup': backup(); break;
     case 'replay': { if(c === 'result') closeSheet(); openReplay(b, c === 'result' ? () => openResult(b) : null); break; }
     case 'rpskip': closeReplay(true); break;
     case 'rpdone': closeReplay(true); break;
-    case 'rpagain': { $('#rpEnd').hidden = true; $('.rp-skip').hidden = false; RP.i = 0; drawFrame(0, true); clearTimeout(RP.timer); RP.timer = setTimeout(stepReplay, 700); break; }
+    case 'rpagain': { RP.timers.forEach(clearTimeout); RP.timers = []; $('#rpEnd').hidden = true; $('.rp-skip').hidden = false; RP.i = 0; drawFrame(0, true); clearTimeout(RP.timer); RP.timer = setTimeout(stepReplay, 700); break; }
     case 'push': ui.stack.push(b === 'pgame' ? {type:b, id:c, tid:d} : {type:b, id:c}); go(); break;
     case 'closeAll': closeSheet(); break;
     case 'rjump': { const el = document.getElementById(b); if(el) el.scrollIntoView({behavior:reduceMotion() ? 'auto' : 'smooth', block:'start'}); break; }
@@ -1793,11 +1977,36 @@ document.addEventListener('click', e => {
     case 'unpublish': confirmSheet('Remove from the Game Library?', 'Other players won\u2019t see it any more. Anyone who already added it keeps their copy.', 'Remove', () => { CM.mine.games = CM.mine.games.filter(x => x.gid !== b); writeMine().then(ok => ok && toast('Removed from the Game Library')); }); break;
     case 'report': confirmSheet('Report this game?', 'Report games that are offensive, spam, or not really a game. A game is hidden once three players report it.', 'Report Game', () => { CM.mine.reported = [...new Set([...CM.mine.reported, b])]; writeMine().then(ok => ok && toast('Thanks. The game was reported.')); }); break;
     case 'create': openCreate(); break;
-    case 'crlow': ui.cr.low = b === 'low'; redrawSheet(createHtml()); break;
-    case 'crend': ui.cr.end = b; ui.cr.val = b === 'rounds' ? '10' : b === 'target' ? '100' : ''; redrawSheet(createHtml()); break;
-    case 'crstep': { const cr = ui.cr; cr[b] = clamp(cr[b] + Number(c), 1, 20); if(b === 'min' && cr.max < cr.min) cr.max = cr.min; if(b === 'max' && cr.min > cr.max) cr.min = cr.max; redrawSheet(createHtml()); break; }
-    case 'crshare': ui.cr.share = !ui.cr.share; redrawSheet(createHtml()); break;
-    case 'saveCreate': saveCreate(); break;
+    case 'crlow': ui.cr.low = b === 'low'; render(); break;
+    case 'crend': ui.cr.end = b; ui.cr.val = b === 'rounds' ? '10' : b === 'target' ? '100' : ''; render(); break;
+    case 'crstep': { const cr = ui.cr; cr[b] = clamp(cr[b] + Number(c), 1, 20); if(b === 'min' && cr.max < cr.min) cr.max = cr.min; if(b === 'max' && cr.min > cr.max) cr.min = cr.max; render(); break; }
+    case 'crshare': ui.cr.share = !ui.cr.share; render(); break;
+    case 'crsave': saveBuilt(); break;
+    case 'crdel': deleteCustom(ui.cr.edit); break;
+    case 'cricon': ui.cr.iconTab = b; render(); break;
+    case 'crsym': ui.cr.sym = b; ui.cr.logo = null; render(); break;
+    case 'crcolor': ui.cr.color = '#' + b; render(); break;
+    case 'crlogorm': ui.cr.logo = null; render(); break;
+    case 'crkind': if(!ui.cr.locked){ ui.cr.kind = b; render(); } break;
+    case 'crlives': ui.cr.lives = clamp(ui.cr.lives + Number(b), 1, 20); render(); break;
+    case 'crival': { const it = ui.cr.items[Number(b)]; it.val = clamp(it.val + Number(c), -100, 100); render(); break; }
+    case 'critype': ui.cr.items[Number(b)].type = c; render(); break;
+    case 'cridel': ui.cr.items.splice(Number(b), 1); render(); break;
+    case 'criadd': if(ui.cr.items.length < 12){ ui.cr.items.push({id:'i' + uid().slice(0, 5), name:'', type:'count', val:1}); render(); } else toast('Up to 12 lines'); break;
+    case 'crwinby': ui.cr.winBy = b; render(); break;
+    case 'crseries': ui.cr.series = b === 'series'; render(); break;
+    case 'crtimer': ui.cr.timer = Number(b); render(); break;
+    case 'crword': ui.cr.words[b] = c; render(); break;
+    case 'crneed': { const k = ui.cr.needs.keys, i = k.indexOf(b); if(i >= 0) k.splice(i, 1); else { if(b === 'none') k.length = 0; else { const n = k.indexOf('none'); if(n >= 0) k.splice(n, 1); } k.push(b); } render(); break; }
+    case 'crxadd': { const v = (ui.cr.extraDraft || '').trim(); if(!v) return; if(ui.cr.needs.extra.length >= 10) return toast('Up to 10 items'); ui.cr.needs.extra.push(v); ui.cr.extraDraft = ''; render(); setTimeout(() => $('#crExtra')?.focus(), 0); break; }
+    case 'crxdel': ui.cr.needs.extra.splice(Number(b), 1); render(); break;
+    case 'editgame': { let t = S.customs.find(x => x.id === b); if(!t){ const c2 = findCommunity(b.slice(2)); if(c2){ keepLocal(c2.t); t = S.customs.find(x => x.id === b); } } if(t) openEdit(t); break; }
+    case 'have': { const i = ui.have.indexOf(b); if(i >= 0) ui.have.splice(i, 1); else ui.have.push(b); render(); break; }
+    case 'tap': { const g = RG(), E = eng(g); E.tap(g, ui.draft, b); redrawSheet(roundHtml()); syncRound(); break; }
+    case 'tmgo': timerGo(); break;
+    case 'tmreset': resetTimer(TMR.gid, TMR.total); render(); break;
+    case 'teamn': ui.setup.teamN = Number(b); ui.setup.team = {}; refreshSetup(); break;
+    case 'teamset': ui.setup.team[b] = Number(c); refreshSetup(); break;
     case 'dtab': ui.dtab = b; redrawSheet(roundHtml()); syncRound(); $('#sheet').scrollTop = 0; break;
     case 'st': { const g = G(), f = fieldsFor(g, b, roundMode(g)).find(x => x.k === c); const dd = ui.draft[b];
       dd[c] = clamp(num(dd[c]) + Number(d), f.min ?? 0, f.max ?? 99); fixField(g, b, c); syncRound(); break; }
@@ -1833,11 +2042,20 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('input', e => {
   const t = e.target, id = t.id;
+  if(ui.si && ['siName','siEmail','siCode'].includes(t.id)){
+    if(t.id === 'siCode') t.value = t.value.replace(/\D/g, '').slice(0, 6);
+    const k = {siName:'name', siEmail:'email', siCode:'code'}[t.id]; ui.si[k] = t.value;
+    const ok = k === 'name' ? !!t.value.trim() : k === 'email' ? /^\S+@\S+\.\S+$/.test(t.value.trim()) : /^\d{6}$/.test(t.value);
+    const b = $('#siGo'); if(b) b.disabled = !ok; return; }
   if(t.id === 'libq'){ ui.libq = t.value; refreshLib(); return; }
   if(t.id === 'rq'){ filterRules(t.value); return; }
-  if(ui.cr && ['crName','crVal','crHow','crRules'].includes(t.id)){ const k = {crName:'name', crVal:'val', crHow:'how', crRules:'rules'}[t.id]; ui.cr[k] = t.value;
-    if(k === 'name'){ $('#sheetAction').disabled = !t.value.trim(); const ic = $('#crIcon .gicon'); if(ic){ ic.textContent = t.value.trim() ? initials(t.value) : '?'; ic.style.background = COLORS[(t.value.length * 7) % COLORS.length]; } }
-    return; }
+  if(ui.cr){
+    const map = {crName:'name', crVal:'val', crWinN:'winN', crOrdN:'orderN', crPts:'placePts', crBidN:'bidN', crBidBase:'bidBase', crBidPer:'bidPer', crBidPen:'bidPen', crExtra:'extraDraft'};
+    if(map[id]){ ui.cr[map[id]] = t.value; return; }
+    if(t.dataset.ik != null){ ui.cr.items[Number(t.dataset.ik)].name = t.value; return; }
+    if(t.dataset.wk){ ui.cr.words[t.dataset.wk] = t.value; return; }
+    if(t.dataset.rk){ ui.cr.rules[t.dataset.rk] = t.value; return; }
+  }
   if(t.dataset.k && ui.round){ const g = RG(); const f = fieldsFor(g, t.dataset.p, roundMode(g)).find(x => x.k === t.dataset.k);
     ui.draft[t.dataset.p][t.dataset.k] = f.type === 'num' ? t.value.replace('−','-') : (t.value === '' ? 0 : clamp(num(t.value), f.min ?? 0, f.max ?? 99));
     fixField(g, t.dataset.p, t.dataset.k); syncRound(); return; }
@@ -1848,6 +2066,9 @@ document.addEventListener('input', e => {
 });
 document.addEventListener('change', e => {
   if(e.target.id === 'setLow'){ ui.setup.low = e.target.checked; refreshSetup(); }
+  if(e.target.id === 'siHide'){ ui.si.hide = e.target.checked; }
+  if(ui.cr && ['crTeams','crDeal','crMulti'].includes(e.target.id)){ ui.cr[{crTeams:'teams', crDeal:'deal', crMulti:'multi'}[e.target.id]] = e.target.checked; }
+  if(e.target.id === 'crLogo'){ loadLogo(e.target.files[0]); e.target.value = ''; }
   if(e.target.id === 'setDeal'){ ui.setup.deal = e.target.checked; refreshSetup(); }
   if(e.target.id === 'pFile'){ loadPhoto(e.target.files[0]); e.target.value = ''; }
   if(e.target.id === 'restoreFile'){ restoreFile(e.target.files[0]); e.target.value = ''; }
@@ -1863,6 +2084,8 @@ document.addEventListener('keydown', e => {
   if(t.dataset && t.dataset.k){ e.preventDefault(); const all = [...document.querySelectorAll('#sheet input[data-k]')]; const i = all.indexOf(t); i < all.length - 1 ? all[i+1].focus() : saveRound(); }
   else if(t.id === 'boxv'){ e.preventDefault(); saveBox(); }
   else if(t.id === 'libq' || t.id === 'rq'){ e.preventDefault(); t.blur(); }
+  else if(t.id === 'crExtra'){ e.preventDefault(); document.querySelector('[data-a="crxadd"]').click(); }
+  else if(['siName','siEmail','siCode'].includes(t.id)){ e.preventDefault(); const b = $('#siGo'); if(b && !b.disabled) siNext(); }
   else if(t.id === 'pName'){ e.preventDefault(); savePlayer(); }
   else if(t.id === 'quickName'){ e.preventDefault(); document.querySelector('[data-a="quickAdd"]').click(); }
 });
@@ -2113,15 +2336,34 @@ const RULES = {
 /* ======================================================================
    RULES VIEWS
    ====================================================================== */
+function winText(t){
+  const E = customEngine(t), U = E.unit.toLowerCase(), Us = pluralWord(U), pw = E.ptsWord.toLowerCase();
+  switch(t.kind){
+    case 'wins': return t.target ? `First to ${plural(t.target, U + ' win').replace(U + ' wins', U + ' wins')}` : `Most ${U} wins after ${t.rounds} ${Us}`;
+    case 'order': return (t.rounds || 1) > 1 ? `Most ${pw} after ${t.rounds} ${Us}` : 'Finish first';
+    case 'lives': return 'Last one standing';
+    case 'bid': return `Highest score after ${t.rounds} ${Us}`;
+    default: return t.target != null ? (t.low ? `Lowest score when someone reaches ${t.target}` : `First to ${t.target} ${pw}`) : t.rounds ? `${t.low ? 'Lowest' : 'Highest'} score after ${t.rounds} ${Us}` : `${t.low ? 'Lowest' : 'Highest'} score`;
+  }
+}
 function customRules(t){
+  const E = customEngine(t), K = KIND[t.kind || 'points'], U = E.unit.toLowerCase();
   const r = {facts:[], sections:[], disputes:[], src:[]};
-  if(t.min || t.max) r.facts.push(['Players', t.min && t.max ? `${t.min}–${t.max}` : `${t.min || 1}+`]);
-  if(t.target != null) r.facts.push([t.low ? 'Ends at' : 'Target', String(t.target)]);
-  if(t.rounds) r.facts.push(['Rounds', String(t.rounds)]);
-  r.facts.push(['Win', t.low ? 'Lowest total score' : 'Highest total score']);
-  const paras = String(t.rulesText || '').split(/\n+/).map(s => s.trim()).filter(Boolean);
-  r.sections.push(['How to play', paras.length ? paras : ['No rules were written for this game yet.']]);
-  if(t.how) r.sections.push(['Scoring', [t.how]]);
+  r.facts.push(['Players', `${t.min || 2}–${t.max || 8}${t.teams ? ' in teams' : ''}`]);
+  r.facts.push(['Scoring', K.name]);
+  r.facts.push(['Win', winText(t)]);
+  const lines = x => String(x || '').split(/\n+/).map(y => y.trim()).filter(Boolean), R = t.rules || {};
+  if(lines(R.goal).length) r.sections.push(['Goal', lines(R.goal)]);
+  if(lines(R.setup).length) r.sections.push(['Setup', lines(R.setup)]);
+  const play = lines(R.play).length ? lines(R.play) : lines(t.rulesText);
+  r.sections.push(['How to play', play.length ? play : ['The creator hasn’t written how to play yet.']]);
+  const notes = [`To win: ${winText(t).charAt(0).toLowerCase() + winText(t).slice(1)}.`];
+  if(t.teams) notes.push('Played in teams. Every member of a team shares its result.');
+  if(t.timer) notes.push(`Each ${U} has a ${fmtT(t.timer)} timer.`);
+  if(t.how && !t.kind) notes.unshift(t.how);
+  r.sections.push(['Scoring', notes]);
+  if(lines(R.end).length) r.sections.push(['End of the game', lines(R.end)]);
+  r.x = {score:E.score || null, notes, tally:E.tally};
   return r;
 }
 const rulesFor = t => RULES[t.id] || customRules(t);
@@ -2164,7 +2406,7 @@ function itemsHtml(head, items){
 }
 const chart = rows => `<table class="chart">${rows.map(([a,b]) => `<tr class="ri"><th>${esc(a)}</th><td>${esc(b)}</td></tr>`).join('')}</table>`;
 function rulesBody(t){
-  const R = rulesFor(t), X = RB[t.id] || {};
+  const R = rulesFor(t), X = RB[t.id] || R.x || {};
   // Build the rulebook's sections in order
   const secs = [];
   const hasScoring = R.sections.some(([h]) => /^Scoring/.test(h));
@@ -2175,10 +2417,11 @@ function rulesBody(t){
     if(X.score && !scored && !hasScoring && /^(End of the game|Winning)$/.test(head)){ scored = true; secs.push({id:'score', name:'Score Chart', html:chart(X.score) + (X.notes && X.notes.length ? itemsHtml('', X.notes) : '')}); }
     secs.push({id:'s' + secs.length, name, html:itemsHtml(head, items)});
   });
+  const nh = needsHtml(t); if(nh) secs.unshift({id:'need', name:'What You Need', html:nh});
   if(X.score && !scored) secs.push({id:'score', name:'Score Chart', html:chart(X.score) + (X.notes && X.notes.length ? itemsHtml('', X.notes) : '')});
   const extra = [];
   if(R.disputes.length) extra.push({id:'qa', name:'Questions & Answers', html:R.disputes.map(([q,a]) => `<details class="qa ri"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join(''), qa:true});
-  extra.push({id:'tally', name:'Keeping Score in Tally', html:itemsHtml('turn', X.tally || (t.feat ? [] : ['Tap Score Round after each round and enter every player’s points. Tally keeps the running totals.', 'Tap any round in the score sheet to change it.'])), small:true});
+  extra.push({id:'tally', name:'Keeping Score in Tally', html:itemsHtml('turn', X.tally || (t.feat ? [] : ['Tap Score Round after each round and enter every player’s points. Tally keeps the running totals.', 'Tap any round in the score sheet to change it.']).concat(t.timer ? [`Start the timer at the top of the score screen. It buzzes when time is up and resets after each ${customEngine(t).unit.toLowerCase()}.`] : [])), small:true});
   const all = secs.concat(extra);
   let h = `<div class="rb" style="--gc:${t.color}">`;
   h += `<div class="rb-cover">${gicon(t,'lg')}<div><div class="rb-kicker">Rules of Play</div><h2>${esc(t.name)}</h2>${t.by ? `<p>Created by ${esc(byName(t.by))}</p>` : ''}</div></div>`;
@@ -2219,14 +2462,31 @@ function cleanGame(g){
   if(!g || typeof g !== 'object') return null;
   const gid = String(g.gid || '').replace(/[^a-z0-9]/gi, '').slice(0, 16), name = cleanStr(g.name, 40).replace(/\n/g, ' ').trim();
   if(!gid || !name) return null;
-  return {gid, name, low:!!g.low, target:cleanInt(g.target, 1, 100000), rounds:cleanInt(g.rounds, 1, 50), min:cleanInt(g.min, 1, 20) || 2, max:cleanInt(g.max, 1, 20) || 8,
-    how:cleanStr(g.how, 160).replace(/\n/g, ' '), rulesText:cleanStr(g.rulesText, 3000), color:COLORS.includes(g.color) ? g.color : COLORS[0], created:Number(g.created) || 0};
+  const one = (v, n, d) => cleanStr(v, n).replace(/\n/g, ' ').trim() || d;
+  const w = g.words && typeof g.words === 'object' ? g.words : {};
+  const items = Array.isArray(g.items) ? g.items.slice(0, 12).map(it => it && typeof it === 'object' ? {id:String(it.id || '').replace(/[^a-z0-9]/gi, '').slice(0, 12) || ('i' + Math.random().toString(36).slice(2, 7)), name:one(it.name, 30, ''), type:['count','check','one','pts'].includes(it.type) ? it.type : 'count', val:cleanInt(it.val, -1000, 1000) ?? 1} : null).filter(it => it && it.name) : undefined;
+  const nd = g.needs && typeof g.needs === 'object' ? g.needs : {};
+  const R = g.rules && typeof g.rules === 'object' ? g.rules : null;
+  const logo = typeof g.logo === 'string' && g.logo.length < 40000 && /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(g.logo) ? g.logo : null;
+  const b = g.bid && typeof g.bid === 'object' ? g.bid : null;
+  return {gid, name, kind:KIND[g.kind] ? g.kind : 'points', low:!!g.low, target:cleanInt(g.target, 1, 100000), rounds:cleanInt(g.rounds, 1, 50), min:cleanInt(g.min, 1, 20) || 2, max:cleanInt(g.max, 1, 20) || 8,
+    how:cleanStr(g.how, 160).replace(/\n/g, ' '), rulesText:cleanStr(g.rulesText, 3000), color:(COLORS.includes(g.color) || GAME_COLORS.includes(g.color)) ? g.color : GAME_COLORS[0],
+    sym:SYMS[g.sym] ? g.sym : null, logo, created:Number(g.created) || 0, items, multi:!!g.multi,
+    placePts:Array.isArray(g.placePts) ? g.placePts.slice(0, 20).map(x => cleanInt(x, -10000, 10000) ?? 0) : undefined, lives:cleanInt(g.lives, 1, 20) || 3,
+    bid:b ? {base:cleanInt(b.base, 0, 1000) ?? 10, per:cleanInt(b.per, 0, 1000) ?? 1, pen:cleanInt(b.pen, 0, 1000) ?? 0} : undefined,
+    teams:!!g.teams, deal:!!g.deal, timer:[0, 30, 60, 120, 300].includes(Number(g.timer)) ? Number(g.timer) : 0,
+    words:{round:one(w.round, 16, 'Round'), pts:one(w.pts, 16, 'Points'), lives:one(w.lives, 16, 'Lives')},
+    needs:{keys:(Array.isArray(nd.keys) ? nd.keys : []).filter(k => EQ[k]).slice(0, 9), items:(Array.isArray(nd.items) ? nd.items : []).slice(0, 10).map(x => one(x, 80, '')).filter(Boolean)},
+    rules:R ? Object.fromEntries(['goal','setup','play','end'].map(k => [k, cleanStr(R[k], 1500)])) : null};
 }
 function tplFrom(g, by){
-  const ends = g.target != null ? (g.low ? `Ends at ${g.target}` : `First to ${g.target}`) : g.rounds ? plural(g.rounds, 'round') : 'Play until you stop';
-  return {id:'c_' + g.gid, gid:g.gid, name:g.name, short:initials(g.name), color:g.color, target:g.target, rounds:g.rounds, low:g.low, min:g.min, max:Math.max(g.min, g.max),
-    how:g.how || 'Points scored this round.', rulesText:g.rulesText, by, community:true, created:g.created, blurb:`${ends} · ${g.low ? 'lowest' : 'highest'} wins`};
+  const K = KIND[g.kind] || KIND.points, U = ((g.words && g.words.round) || 'Round').toLowerCase();
+  const end = g.kind === 'wins' ? (g.target ? `First to ${g.target} wins` : plural(g.rounds || 1, U))
+    : g.kind === 'order' ? ((g.rounds || 1) > 1 ? plural(g.rounds, U) : 'One result') : g.kind === 'lives' ? `${g.lives || 3} lives`
+    : g.kind === 'bid' ? plural(g.rounds || 1, U) : g.target != null ? (g.low ? `Ends at ${g.target}` : `First to ${g.target}`) : g.rounds ? plural(g.rounds, U) : 'Play until you stop';
+  return {...g, id:'c_' + g.gid, short:initials(g.name), max:Math.max(g.min || 2, g.max || 8), by, community:true, blurb:`${K.name} · ${end}`};
 }
+const isOwn = t => !!t && (S.customs || []).some(x => x.id === t.id) && (!t.by || t.by === CM.me);
 function communityGames(){
   const adds = {}, reps = {}, out = [];
   Object.values(CM.docs).forEach(d => { (Array.isArray(d.added) ? d.added : []).forEach(x => adds[x] = (adds[x] || 0) + 1); (Array.isArray(d.reported) ? d.reported : []).forEach(x => reps[x] = (reps[x] || 0) + 1); });
@@ -2292,11 +2552,14 @@ function toggleAdded(t){
 
 function viewLibrary(){
   let h = navbar('Game Library', `<button class="nav-btn" data-a="create">Create</button>`);
-  h += `<div class="lib-top"><input type="search" id="libq" class="search" placeholder="Search games" value="${esc(ui.libq)}" autocomplete="off" enterkeyhint="search">${seg([['classics','Classics'],['community','Community']], ui.libTab, 'libtab')}</div><div id="liblist">${libList()}</div>`;
+  h += `<div class="lib-top"><input type="search" id="libq" class="search" placeholder="Search games" value="${esc(ui.libq)}" autocomplete="off" enterkeyhint="search">${seg([['classics','Classics'],['community','Community']], ui.libTab, 'libtab')}</div>`;
+  h += `<div class="have"><div class="have-h">What do you have?</div><div class="have-row">${['cards','dice','dominoes','tiles','board','boxed','none'].map(k => `<button class="have-chip ${ui.have.includes(k) ? 'on' : ''}" data-a="have:${k}" aria-pressed="${ui.have.includes(k)}">${EQ[k].svg}<span>${esc(k === 'boxed' ? 'The game itself' : EQ[k].label)}</span></button>`).join('')}</div></div>`;
+  h += `<div id="liblist">${libList()}</div>`;
   return h;
 }
 function refreshLib(){ const el = $('#liblist'); if(el) el.innerHTML = libList(); }
 function libRow(t, kind, key, sub){
+  if(t.feat) return `<div class="row lrow"><button class="lmain" data-a="info:${kind}:${key}">${gicon(t)}<div class="grow"><div class="t1">${esc(t.name)}</div><div class="t2">${sub}</div></div></button><span class="feat-tag">Featured</span></div>`;
   const added = S.added.includes(t.id);
   const fl = ui.flash === t.id ? ' flash' : '';
   return `<div class="row lrow${fl}"><button class="lmain" data-a="info:${kind}:${key}">${gicon(t)}<div class="grow"><div class="t1">${esc(t.name)}</div><div class="t2">${sub}</div></div></button><button class="addbtn ${added ? 'on' : ''}" data-a="addgame:${kind}:${key}" aria-pressed="${added}" aria-label="${added ? 'Remove' : 'Add'} ${esc(t.name)}">${added ? '✓ Added' : 'Add'}</button></div>`;
@@ -2304,10 +2567,12 @@ function libRow(t, kind, key, sub){
 // Games you've added rise to the top, most recently added first
 function addedFirst(list, tOf){ const k = x => S.added.indexOf(tOf(x).id); return list.slice().sort((a, b) => k(b) - k(a)); }
 function libList(){
-  const q = ui.libq.trim().toLowerCase(), match = t => !q || t.name.toLowerCase().includes(q);
+  const q = ui.libq.trim().toLowerCase(), match = t => (!q || t.name.toLowerCase().includes(q)) && canPlayWith(t, ui.have) && !t.hidden;
+  const none = `<p class="foot" style="text-align:center;margin-top:24px">${ui.have.length ? 'No games match what you have. Try ticking more.' : `Nothing matches \u201c${esc(ui.libq)}\u201d.`}</p>`;
+  const sub = t => esc(needsLine(t) || t.blurb || '');
   if(ui.libTab === 'classics'){
-    const list = addedFirst(TEMPLATES.filter(t => !t.feat && match(t)), t => t);
-    return list.length ? `<div class="group">${list.map(t => libRow(t, 'classic', t.id, esc(t.blurb))).join('')}</div><p class="foot">Tap a game to read its rules. Add it and it appears on your Games tab.</p>` : `<p class="foot" style="text-align:center;margin-top:24px">No classics match “${esc(ui.libq)}”.</p>`;
+    const list = addedFirst(TEMPLATES.filter(t => match(t)), t => t);
+    return list.length ? `<div class="group">${list.map(t => libRow(t, 'classic', t.id, sub(t))).join('')}</div><p class="foot">Tap a game to read its rules. Add it and it appears on your Games tab.</p>` : none;
   }
   let h = '';
   if(CM.state === 'loading') return `<div class="empty"><p>Loading games from other players…</p></div>`;
@@ -2317,12 +2582,13 @@ function libList(){
   if(CM.state === 'ready'){
     h += `<div class="chips wrap" style="margin:2px 0 10px"><button class="chip ${ui.libSort === 'popular' ? 'on' : ''}" data-a="libsort:popular">Most added</button><button class="chip ${ui.libSort === 'new' ? 'on' : ''}" data-a="libsort:new">Newest</button></div>`;
     if(!all.length) return h + `<div class="empty"><b>No community games yet</b><p>Invented a game with your friends, or play by house rules? Create it and anyone using the app can add it.</p><button class="btn primary" data-a="create">Create a Game</button></div>`;
-    if(!list.length) return h + `<p class="foot" style="text-align:center;margin-top:24px">No community games match “${esc(ui.libq)}”.</p>`;
-    h += `<div class="group">${list.map(x => libRow(x.t, 'community', x.g.gid, `by ${esc(byName(x.by))} · ${x.adds ? `added by ${plural(x.adds, 'player')}` : 'new'}`)).join('')}</div>`;
+    if(!list.length) return h + none;
+    h += `<div class="group">${list.map(x => libRow(x.t, 'community', x.g.gid, `${esc(KIND[x.t.kind] ? KIND[x.t.kind].name : 'Points')} \u00b7 by ${esc(byName(x.by))} \u00b7 ${x.adds ? `added by ${plural(x.adds, 'player')}` : 'new'}`)).join('')}</div>`;
     h += `<p class="foot">Games here are made by players. Report anything that shouldn’t be here and it’s hidden after three reports.</p>`;
   } else {
     const local = (S.customs || []).filter(t => match(t));
     if(local.length) h += `<h2 class="sh">Made on this phone</h2><div class="group">${local.map(t => libRow(t, 'local', t.id.slice(2), esc(t.blurb || ''))).join('')}</div>`;
+    else if(ui.have.length || q) h += none;
   }
   return h;
 }
@@ -2332,8 +2598,9 @@ function infoHtml(){
   const {kind, key} = ui.info, t = libTemplate(kind, key);
   if(!t) return `<div class="sheet-h"><div class="l"></div><b>Game</b><div class="r"><button data-a="closeSheet">Done</button></div></div><div class="empty"><p>This game was removed from the library.</p></div>`;
   const added = S.added.includes(t.id), c = kind === 'community' ? findCommunity(key) : null;
-  let h = `<div class="sheet-h"><div class="l"></div><b>${kind === 'classic' ? 'Classic' : 'Player-made Game'}</b><div class="r"><button data-a="closeSheet">Done</button></div></div>`;
-  h += `<div class="info-actions"><button class="btn primary" data-a="playnow:${kind}:${key}">Play Now</button><button class="btn secondary" data-a="addgame:${kind}:${key}:info">${added ? 'Remove from My Games' : 'Add to My Games'}</button></div>`;
+  let h = `<div class="sheet-h"><div class="l"></div><b>${kind === 'classic' ? (t.feat ? 'Featured' : 'Classic') : 'Player-made Game'}</b><div class="r"><button data-a="closeSheet">Done</button></div></div>`;
+  h += `<div class="info-actions ${t.feat ? 'one' : ''}"><button class="btn primary" data-a="playnow:${kind}:${key}">Play Now</button>${t.feat ? '' : `<button class="btn secondary" data-a="addgame:${kind}:${key}:info">${added ? 'Remove from My Games' : 'Add to My Games'}</button>`}</div>`;
+  if(isOwn(t) || (c && c.mine)) h += `<button class="btn secondary" style="margin-top:10px" data-a="editgame:${t.id}">Edit Game</button>`;
   h += rulesBody(t);
   if(c && c.mine) h += `<div class="stackgap"><button class="btn danger" style="background:var(--sheetcard)" data-a="unpublish:${key}">Remove from Library</button></div><p class="foot">It stays on your phone and in your stats either way.</p>`;
   else if(c && CM.canWrite) h += CM.mine.reported.includes(key) ? `<p class="foot" style="text-align:center">You reported this game.</p>` : `<div class="stackgap"><button class="link-btn danger" style="justify-self:center" data-a="report:${key}">Report this game</button></div>`;
@@ -2341,43 +2608,410 @@ function infoHtml(){
 }
 function openInfo(kind, key){ ui.info = {kind, key}; ui.sheetBack = null; openSheet(infoHtml()); }
 
-/* create a game */
-function openCreate(){
-  ui.cr = {name:'', low:false, end:'target', val:'100', min:2, max:6, how:'', rules:'', share:CM.state === 'ready' && CM.canWrite};
-  openSheet(createHtml());
+/* ======================================================================
+   WHAT YOU NEED — equipment for every game, used by the rules and the
+   library's "What do you have?" filter
+   ====================================================================== */
+const EQUIP = [
+  ['cards', 'Deck of cards', '<rect x="3" y="5" width="11" height="15" rx="2" transform="rotate(-12 8.5 12.5)" opacity=".55"/><rect x="9" y="4" width="11" height="15" rx="2"/>'],
+  ['dice', 'Dice', '<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><g fill="var(--dicepip,#FFFFFF)"><circle cx="8.5" cy="8.5" r="1.7"/><circle cx="15.5" cy="15.5" r="1.7"/><circle cx="12" cy="12" r="1.7"/></g>'],
+  ['dominoes', 'Dominoes', '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><g fill="var(--dicepip,#FFFFFF)"><rect x="8.5" y="11.4" width="7" height="1.2" rx=".6"/><circle cx="12" cy="7" r="1.5"/><circle cx="10" cy="15.5" r="1.3"/><circle cx="14" cy="18" r="1.3"/></g>'],
+  ['tiles', 'Tiles', '<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2" opacity=".6"/><rect x="3" y="13" width="8" height="8" rx="2" opacity=".6"/><rect x="13" y="13" width="8" height="8" rx="2"/>'],
+  ['board', 'Game board', '<rect x="3" y="3" width="18" height="18" rx="3" opacity=".35"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18" stroke="currentColor" stroke-width="1.6" fill="none"/>'],
+  ['boxed', 'Its own game box', '<path d="M3 8l9-4.5L21 8v9l-9 4.5L3 17z" opacity=".45"/><path d="M3 8l9 4.5L21 8M12 12.5v9" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/>'],
+  ['paper', 'Pen & paper', '<rect x="4" y="3" width="13" height="18" rx="2" opacity=".45"/><path d="M19.5 4.5l1.5 1.5-8 8-2.3.8.8-2.3z"/>'],
+  ['other', 'Other items', '<circle cx="6" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="18" cy="12" r="2.2"/>'],
+  ['none', 'Nothing but people', '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5z"/><circle cx="17" cy="9" r="2.5" opacity=".6"/><path d="M15.6 14.7c3 .1 5.4 2.2 5.4 5.3h-4.3c0-2-.4-3.8-1.1-5.3z" opacity=".6"/>']
+];
+const EQ = Object.fromEntries(EQUIP.map(([k, l, p]) => [k, {label:l, svg:`<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${p}</svg>`}]));
+const NEEDS = {
+  blitz:{keys:['boxed'], items:['A Dutch Blitz deck for each player (one box has 4)']},
+  fivecrowns:{keys:['boxed'], items:['The Five Crowns deck: two 58-card decks shuffled together']},
+  wizard:{keys:['boxed'], items:['The 60-card Wizard deck','No Wizard deck? Use a standard deck and mark 4 extra cards as Wizards and 4 as Jesters']},
+  sushi:{keys:['boxed'], items:['Sushi Go! or Sushi Go Party! cards']},
+  qwirkle:{keys:['boxed', 'tiles'], items:['108 Qwirkle tiles and the bag']},
+  phase10:{keys:['boxed'], items:['The Phase 10 deck']},
+  yahtzee:{keys:['dice'], items:['5 standard dice','A cup to roll them in (optional)']},
+  uno:{keys:['boxed'], items:['An UNO deck']},
+  crokinole:{keys:['board'], items:['A crokinole board','12 discs per player or team, in two colours']},
+  hearts:{keys:['cards'], items:['One standard 52-card deck']},
+  skyjo:{keys:['boxed'], items:['The SKYJO deck']},
+  golf:{keys:['cards'], items:['One standard deck', 'A second deck for 5 or more players']},
+  rummy:{keys:['cards'], items:['One standard deck', 'A second deck for 5 or more players']},
+  cribbage:{keys:['cards'], items:['One standard deck','A cribbage board (optional: Tally can keep score)']},
+  farkle:{keys:['dice'], items:['6 standard dice']},
+  mexicantrain:{keys:['dominoes'], items:['A double-12 dominoes set (91 tiles)','A small marker for each player, like coins']},
+  scrabble:{keys:['boxed', 'board', 'tiles'], items:['The Scrabble board, 100 letter tiles and the tile racks']}
+};
+const needsOf = t => t ? (NEEDS[t.id] || t.needs || {keys:[], items:[]}) : {keys:[], items:[]};
+const needsLine = t => { const n = needsOf(t); return (n.keys || []).filter(k => k !== 'other').map(k => EQ[k] ? EQ[k].label : '').filter(Boolean).join(' · '); };
+// "I have a deck of cards" shows every game whose needs are covered by what's ticked
+function canPlayWith(t, have){
+  if(!have.length) return true;
+  const keys = (needsOf(t).keys || []).filter(k => k !== 'none' && k !== 'paper');
+  if(!keys.length) return have.includes('none') || true;
+  return keys.every(k => have.includes(k));
 }
-function createHtml(){
-  const c = ui.cr, color = COLORS[(c.name.length * 7) % COLORS.length];
-  let h = sheetHead('New Game', 'Create', !c.name.trim(), 'saveCreate');
-  h += `<div class="hero" style="padding-top:6px" id="crIcon"><span class="gicon lg" style="background:${color}">${esc(c.name.trim() ? initials(c.name) : '?')}</span></div>`;
-  h += `<div class="group plain"><div class="row"><input class="field" type="text" id="crName" placeholder="Game name" value="${esc(c.name)}" maxlength="40" autocomplete="off" autocapitalize="words"></div></div>`;
-  h += `<div class="seg-wrap" style="margin-top:16px"><span class="lbl">Who wins?</span>${seg([['high','Highest score'],['low','Lowest score']], c.low ? 'low' : 'high', 'crlow')}</div>`;
-  h += `<div class="seg-wrap" style="margin-top:10px"><span class="lbl">The game ends</span>${seg([['target','At a score'],['rounds','After rounds'],['none','When you decide']], c.end, 'crend')}</div>`;
-  if(c.end !== 'none') h += `<div class="group plain" style="margin-top:6px"><div class="row"><label class="grow" for="crVal">${c.end === 'rounds' ? 'Number of rounds' : c.low ? 'Ends when someone reaches' : 'First to reach'}</label><input class="field right" style="flex:0 0 90px;width:90px" type="text" inputmode="numeric" id="crVal" value="${esc(c.val)}" placeholder="${c.end === 'rounds' ? '10' : '100'}" autocomplete="off"></div></div>`;
-  h += `<div class="group" style="margin-top:16px"><div class="fgrid"><div class="frow half"><div class="fl">Fewest players</div><div class="stepper"><button type="button" data-a="crstep:min:-1" aria-label="Fewer">−</button><input type="text" readonly value="${c.min}" aria-label="Fewest players"><button type="button" data-a="crstep:min:1" aria-label="More">+</button></div></div><div class="frow half"><div class="fl">Most players</div><div class="stepper"><button type="button" data-a="crstep:max:-1" aria-label="Fewer">−</button><input type="text" readonly value="${c.max}" aria-label="Most players"><button type="button" data-a="crstep:max:1" aria-label="More">+</button></div></div></div></div>`;
-  h += `<h2 class="sh" style="font-size:15px;margin-top:20px">Scoring</h2><div class="group plain"><div class="row"><input class="field" type="text" id="crHow" placeholder="What scores points each round?" value="${esc(c.how)}" maxlength="160" autocomplete="off"></div></div><p class="hint">Shown as a reminder when people enter scores.</p>`;
-  h += `<h2 class="sh" style="font-size:15px">How to Play</h2><div class="group plain"><textarea id="crRules" rows="7" maxlength="3000" placeholder="Explain the setup, a turn, and how the game ends. Start a new line for each step.">${esc(c.rules)}</textarea></div>`;
-  const shareSub = CM.state !== 'ready' ? 'Not available in this view. The game will be saved on this phone only.' : !CM.canWrite ? 'You can browse the library, but this view can’t publish to it.' : 'Anyone using the app can find it in the Game Library and add it.';
-  h += `<div class="group" style="margin-top:16px"><button type="button" class="frow tog" data-a="crshare" ${CM.state === 'ready' && CM.canWrite ? '' : 'disabled'} aria-pressed="${c.share}"><div class="fl"><div>Share to the Game Library</div><div class="t2" style="white-space:normal">${shareSub}</div></div><span class="check ${c.share ? 'on' : ''}">${c.share ? '✓' : ''}</span></button></div>`;
+function needsHtml(t){
+  const n = needsOf(t), keys = n.keys || [], items = n.items || n.extra || [];
+  if(!keys.length && !items.length) return '';
+  let h = keys.length ? `<div class="need-keys">${keys.map(k => EQ[k] ? `<span class="need-key ri">${EQ[k].svg}${esc(EQ[k].label)}</span>` : '').join('')}</div>` : '';
+  if(items.length) h += `<ul class="bul">${items.map(x => `<li class="ri">${esc(x)}</li>`).join('')}</ul>`;
   return h;
 }
-function saveCreate(){
-  const c = ui.cr, name = c.name.trim().replace(/\s+/g, ' ');
-  if(!name) return;
-  if(allTemplates().some(t => t.name.toLowerCase() === name.toLowerCase())) return toast(`There’s already a game called ${name}`);
-  let target = null, rounds = null;
-  if(c.end !== 'none'){
-    const v = parseInt(String(c.val).trim(), 10);
-    if(!Number.isFinite(v) || v < 1) return toast(c.end === 'rounds' ? 'Enter how many rounds to play' : 'Enter the score that ends the game');
-    if(c.end === 'rounds'){ if(v > 50) return toast('Up to 50 rounds'); rounds = v; } else target = Math.min(v, 100000);
+
+/* ======================================================================
+   GAME ICONS — symbols and uploaded logos
+   ====================================================================== */
+const SYMS = {
+  cards:'<rect x="3" y="5" width="11" height="15" rx="2" transform="rotate(-12 8.5 12.5)" opacity=".6"/><rect x="9" y="4" width="11" height="15" rx="2"/>',
+  dice:'<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><g fill="var(--symbg,#000)"><circle cx="8.3" cy="8.3" r="1.6"/><circle cx="15.7" cy="8.3" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="8.3" cy="15.7" r="1.6"/><circle cx="15.7" cy="15.7" r="1.6"/></g>',
+  crown:'<path d="M3 7.5l4.6 3.6L12 4l4.4 7.1L21 7.5l-1.8 10.2H4.8z"/><rect x="4.8" y="18.8" width="14.4" height="2.2" rx="1.1"/>',
+  star:'<path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/>',
+  heart:'<path d="M12 20.5s-8.5-5.2-8.5-11A4.8 4.8 0 0 1 12 6.3a4.8 4.8 0 0 1 8.5 3.2c0 5.8-8.5 11-8.5 11z"/>',
+  spade:'<path d="M12 2.5c3 3.6 8.5 6.6 8.5 10.8a4.3 4.3 0 0 1-7.2 3.2l.9 4.5H9.8l.9-4.5a4.3 4.3 0 0 1-7.2-3.2C3.5 9.1 9 6.1 12 2.5z"/>',
+  diamond:'<path d="M12 2.5l7.5 9.5-7.5 9.5-7.5-9.5z"/>',
+  club:'<circle cx="12" cy="7.5" r="4"/><circle cx="7" cy="13" r="4"/><circle cx="17" cy="13" r="4"/><path d="M11 13h2l1.2 8H9.8z"/>',
+  trophy:'<path d="M7 3.5h10v6a5 5 0 0 1-10 0z"/><path d="M7 5.5H3.8v1.8A3.8 3.8 0 0 0 7.6 11M17 5.5h3.2v1.8a3.8 3.8 0 0 1-3.8 3.7" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="10.8" y="14" width="2.4" height="4"/><rect x="7.5" y="18" width="9" height="2.6" rx="1"/>',
+  target:'<circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="5.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="2"/>',
+  flag:'<rect x="4.5" y="2.5" width="2.2" height="19" rx="1.1"/><path d="M6.7 3.5h12l-3 4.5 3 4.5h-12z"/>',
+  bolt:'<path d="M13.5 2L4.5 13.5h6l-1 8.5 9-11.5h-6z"/>',
+  ball:'<circle cx="12" cy="12" r="9.5"/><path d="M2.6 12h18.8M12 2.5v19M5.3 5.3c2.7 2.4 2.7 11 0 13.4M18.7 5.3c-2.7 2.4-2.7 11 0 13.4" fill="none" stroke="var(--symbg,#000)" stroke-width="1.3"/>',
+  pawn:'<circle cx="12" cy="6.5" r="3.5"/><path d="M9.3 10.5h5.4l1.3 6H8z"/><rect x="5.5" y="17" width="13" height="4" rx="1.5"/>',
+  dragon:'<path d="M4 18c3-1 4-4 4-7 0-3 2-6 6-6 2 0 3 1 4 2l2-1-1 3c1 2 0 4-2 5l2 3-3-1c-1 2-3 3-6 3h-6z"/><circle cx="16" cy="8.5" r="1" fill="var(--symbg,#000)"/>',
+  clock:'<circle cx="12" cy="12" r="9.5"/><path d="M12 6.5V12l3.5 2.5" fill="none" stroke="var(--symbg,#000)" stroke-width="2" stroke-linecap="round"/>',
+  music:'<path d="M9 18.5a3 3 0 1 1-2-2.8V5l12-2.5v12.7a3 3 0 1 1-2-2.8V6.6l-8 1.7z"/>',
+  skull:'<path d="M12 3a8 8 0 0 0-8 8c0 2.6 1.2 4.5 3 5.6V20h2.5v-2h1.5v2h2v-2h1.5v2H17v-3.4c1.8-1.1 3-3 3-5.6a8 8 0 0 0-8-8z"/><g fill="var(--symbg,#000)"><circle cx="9" cy="11.5" r="2"/><circle cx="15" cy="11.5" r="2"/></g>'
+};
+const GAME_COLORS = ['#007AFF','#5856D6','#AF52DE','#FF2D55','#FF3B30','#FF9500','#C77C02','#34C759','#13866A','#00A5A8','#8E5B3A','#3A3A3C'];
+const symSvg = (k, bg) => `<svg viewBox="0 0 24 24" fill="currentColor" style="--symbg:${bg}" aria-hidden="true">${SYMS[k] || SYMS.cards}</svg>`;
+
+/* ======================================================================
+   TEAMS — a team game scores per team; each member's stats and rating
+   still count the team's finish
+   ====================================================================== */
+let TEAMS = {};
+function indexTeams(){ TEAMS = {}; (S.games || []).forEach(g => g.teams && Object.entries(g.teams).forEach(([id, tm]) => TEAMS[id] = tm)); }
+const TEAM_COLORS = ['#007AFF','#FF3B30','#34C759','#FF9500'];
+const inGame = (g, pid) => g.players.includes(pid) || (!!g.teams && Object.values(g.teams).some(t => t.members.includes(pid)));
+const sideOf = (g, pid) => g.teams ? (Object.keys(g.teams).find(id => g.teams[id].members.includes(pid)) || pid) : pid;
+const expandSides = (g, st) => g.teams ? st.flatMap(r => ((g.teams[r.pid] && g.teams[r.pid].members) || []).map(m => ({...r, pid:m, side:r.pid}))) : st.map(r => ({...r, side:r.pid}));
+function makeTeams(g, groups){
+  g.teams = {}; const ids = [];
+  groups.forEach((members, i) => {
+    if(!members.length) return;
+    const id = `tm_${g.id}_${i}`, L = 'ABCD'[i];
+    const name = members.length <= 2 ? members.map(m => pname(m).split(' ')[0]).join(' & ') : `Team ${L}`;
+    g.teams[id] = {name, short:L, color:TEAM_COLORS[i % 4], members:members.slice()}; ids.push(id); TEAMS[id] = g.teams[id];
+  });
+  g.players = ids;
+}
+
+/* ======================================================================
+   CUSTOM GAME ENGINES — six ways to keep score
+   ====================================================================== */
+const KINDS = [
+  ['points', 'Points', 'Add up points every round', 'star'],
+  ['sheet', 'Score sheet', 'List what scores, Tally does the math', 'cards'],
+  ['wins', 'Round wins', 'Win rounds, no points needed', 'trophy'],
+  ['order', 'Finishing order', 'Who came 1st, 2nd, 3rd…', 'flag'],
+  ['lives', 'Lives', 'Lose lives until one is left', 'heart'],
+  ['bid', 'Bid & make', 'Predict your tricks, then score', 'target']
+];
+const KIND = Object.fromEntries(KINDS.map(k => [k[0], {name:k[1], desc:k[2], sym:k[3]}]));
+function pluralWord(w){
+  w = String(w || '');
+  if(/[^aeiou]y$/i.test(w)) return w.slice(0, -1) + 'ies';
+  if(/(s|x|z|ch|sh)$/i.test(w)) return w + 'es';
+  return w + 's';
+}
+function engOf(tid){ return ENGINES[tid] || customEngine(tmpl(tid)); }
+const sgnv = v => v > 0 ? '+' + v : v < 0 ? '−' + Math.abs(v) : '0';
+// Detailed rounds for a player in custom games (team-aware)
+const drC = (pid, gs) => { const out = []; gs.forEach(g => { const sd = sideOf(g, pid); g.rounds.forEach((r, i) => { const d = r.detail && r.detail[sd]; if(d) out.push({g, r, i, d, s:r.scores[sd]}); }); }); return out; };
+function livesLeft(g, p, upto){ const N = g.lives || 3; let lost = 0; g.rounds.slice(0, upto ?? g.rounds.length).forEach(r => lost += r.scores[p] || 0); return N - lost; }
+function outAt(g, p){ const N = g.lives || 3; let lost = 0; for(let i = 0; i < g.rounds.length; i++){ lost += g.rounds[i].scores[p] || 0; if(lost >= N) return i + 1; } return Infinity; }
+
+function customEngine(t){
+  t = t || {}; const words = t.words || {}, unit = (words.round || 'Round').trim() || 'Round', U = unit.toLowerCase();
+  const base = {custom:true, kind:t.kind || 'points', unit, units:pluralWord(unit), ptsWord:(words.pts || 'Points').trim() || 'Points', timer:t.timer || 0};
+  const k = base.kind;
+  if(k === 'sheet'){
+    const items = (t.items || []).filter(it => it && it.name);
+    return {...base, noQuick:true,
+      fields:() => items.map(it => it.type === 'count' ? {k:it.id, type:'step', min:0, max:99, label:`${it.name} (${sgnv(it.val)} each)`}
+        : it.type === 'pts' ? {k:it.id, type:'num', label:it.name} : {k:it.id, type:'tog', one:it.type === 'one', label:`${it.name} (${sgnv(it.val)})`}),
+      compute(g, D){
+        const scores = {}, detail = {};
+        g.players.forEach(p => { let s = 0; const v = {};
+          items.forEach(it => { const raw = D[p][it.id];
+            if(it.type === 'count'){ const n = num(raw); v[it.id] = n; s += n * it.val; }
+            else if(it.type === 'pts'){ const n = num(raw); v[it.id] = n; s += n; }
+            else { v[it.id] = !!raw; if(raw) s += it.val; } });
+          scores[p] = s; detail[p] = {v}; });
+        return {scores, detail};
+      },
+      stats(pid, gs){
+        const R = drC(pid, gs); if(!R.length) return null;
+        const out = [{label:`Avg per ${U}`, v:avg(R, x => x.s), f:1, best:t.low ? 'low' : 'high'}];
+        items.slice(0, 5).forEach(it => {
+          if(it.type === 'count' || it.type === 'pts') out.push({label:`${it.name}`, v:R.reduce((a, x) => a + num(x.d.v && x.d.v[it.id]), 0), best:(it.type === 'pts' || it.val > 0) !== !!t.low ? 'high' : 'low', sub:'total'});
+          else { const n = R.filter(x => x.d.v && x.d.v[it.id]).length; out.push({label:it.name, v:n, best:(it.val > 0) !== !!t.low ? 'high' : 'low', sub:`${Math.round(n / R.length * 100)}% of ${pluralWord(U)}`}); }
+        });
+        return out;
+      },
+      score:items.map(it => [it.name, it.type === 'count' ? `${sgnv(it.val)} each` : it.type === 'pts' ? 'Points entered' : sgnv(it.val) + (it.type === 'one' ? ' (one player)' : '')]),
+      tally:[`After each ${U}, enter each player’s ${items.map(it => it.name.toLowerCase()).slice(0, 3).join(', ')}${items.length > 3 ? ' and more' : ''}. Tally works out the score.`, 'Every line on the score sheet is tracked as a stat on each player’s profile.']};
   }
-  if(c.share && CM.mine.games.length >= 20) return toast('You can publish up to 20 games');
-  const g = {gid:uid().replace(/[^a-z0-9]/g, ''), name, low:c.low, target, rounds, min:c.min, max:Math.max(c.min, c.max), how:c.how.trim(), rulesText:c.rules.trim(), color:COLORS[(name.length * 7) % COLORS.length], created:Date.now()};
-  const t = tplFrom(g, c.share ? CM.me : undefined); if(!c.share){ delete t.by; t.community = false; }
-  S.customs.push(t); S.added.push(t.id); save();
-  closeSheet(); render();
-  if(c.share){ CM.mine.games = [...CM.mine.games, g]; writeMine().then(ok => ok && toast(`${name} is in the Game Library`)); }
-  else toast(`${name} added to My Games`);
+  if(k === 'wins'){
+    return {...base, noQuick:true, entry:'tap', low:false,
+      fields:() => [{k:'won', type:'tog', one:!t.multi, label:'Won'}],
+      tapMark:(d) => d && d.won ? '✓' : '',
+      tap(g, D, p){ const on = !D[p].won; if(!t.multi) g.players.forEach(q => D[q].won = false); D[p].won = on; },
+      compute(g, D){ const scores = {}, detail = {}; g.players.forEach(p => { scores[p] = D[p].won ? 1 : 0; detail[p] = {won:!!D[p].won}; });
+        const w = g.players.filter(p => D[p].won); return {scores, detail, err:w.length ? null : `Tap who won this ${U}.`, summary:w.length ? `<b>${esc(listNames(w))}</b> won this ${U}.` : ''}; },
+      disp:v => v ? '✓' : '·',
+      sub:(g, pid, total) => `${plural(total, U + ' win').replace(/^(\d+) /, '$1 ')}${g.target ? ` · first to ${g.target}` : ''}`,
+      end(g){ if(g.target){ const tot = totals(g), w = g.players.filter(p => tot[p] >= g.target); if(w.length) return {msg:`${pname(w[0])} won ${g.target} ${pluralWord(U)}.`}; } return null; },
+      stats(pid, gs){ const R = drC(pid, gs); if(!R.length) return null; const w = R.filter(x => x.d.won).length;
+        return [{label:`${unit} wins`, v:w, best:'high'}, {label:`${unit} win rate`, v:w / R.length, f:'%', best:'high'}, {label:`${pluralWord(unit)} played`, v:R.length}]; },
+      score:[[`Winning a ${U}`, '1'], [`Everyone else`, '0']],
+      tally:[`After each ${U}, tap who won it.`, t.multi ? `More than one player can win a ${U}.` : `Only one player wins each ${U}.`]};
+  }
+  if(k === 'order'){
+    const series = (t.rounds || 1) > 1, pts = Array.isArray(t.placePts) && t.placePts.length ? t.placePts : [10, 6, 4, 3, 2, 1];
+    const val = (place, n) => series ? (pts[place - 1] ?? 0) : n - place + 1;
+    return {...base, noQuick:true, entry:'tap', low:false,
+      fields:() => [{k:'place', type:'tog', label:'Place'}],
+      tapMark:(d) => d && d.place ? ordinal(d.place) : '',
+      tap(g, D, p){
+        const cur = D[p].place;
+        if(cur){ g.players.forEach(q => { if(D[q].place > cur) D[q].place--; }); D[p].place = 0; }
+        else D[p].place = Math.max(0, ...g.players.map(q => D[q].place || 0)) + 1;
+        const open = g.players.filter(q => !D[q].place); if(open.length === 1 && g.players.length > 1) D[open[0]].place = g.players.length;
+      },
+      compute(g, D){ const n = g.players.length, scores = {}, detail = {};
+        const open = g.players.filter(p => !D[p].place);
+        g.players.forEach(p => { const pl = D[p].place || n; scores[p] = val(pl, n); detail[p] = {place:pl}; });
+        return {scores, detail, err:open.length ? 'Tap players in the order they finished.' : null}; },
+      disp:(v, r, p) => r && r.detail && r.detail[p] ? ordinal(r.detail[p].place) : String(v),
+      big:series ? null : (g, pid) => { const r = g.rounds[0]; return r && r.detail && r.detail[pid] ? ordinal(r.detail[pid].place) : '–'; },
+      scoreLabel:(g, n) => series ? `Results for ${unit} ${n + 1}` : 'Enter Results',
+      sub:(g, pid, total) => series ? `${total} ${base.ptsWord.toLowerCase()}` : (g.rounds.length ? 'Finished' : 'Waiting for results'),
+      stats(pid, gs){ const R = drC(pid, gs); if(!R.length) return null;
+        return [{label:'Finished 1st', v:R.filter(x => x.d.place === 1).length, best:'high'}, {label:'Top 3 finishes', v:R.filter(x => x.d.place <= 3).length, best:'high'}, {label:'Average finish', v:avg(R, x => x.d.place), f:1, best:'low'}]; },
+      score:series ? pts.map((v, i) => [`${ordinal(i + 1)} place`, String(v)]) : null,
+      tally:[series ? `After each ${U}, tap players in the order they finished. Tally gives points for each place.` : 'When the game ends, tap players in the order they finished. The last player is filled in for you.', 'Tap a player again to take them out of the order.']};
+  }
+  if(k === 'lives'){
+    const N = t.lives || 3, lw = (words.lives || 'Lives').trim() || 'Lives';
+    const lwS = /ies$/i.test(lw) ? lw.slice(0, -3) + 'y' : /s$/i.test(lw) ? lw.slice(0, -1) : lw;
+    return {...base, noQuick:true, low:true, lives:N, livesWord:lw,
+      fields:(g, pid) => livesLeft(g, pid) <= 0 ? [] : [{k:'lost', type:'step', min:-N, max:N, label:`${lw} lost`}],
+      outMsg:(g, pid) => `Out in ${unit} ${outAt(g, pid)}`,
+      compute(g, D){ const scores = {}, detail = {};
+        g.players.forEach(p => { const left = livesLeft(g, p); const lost = left <= 0 ? 0 : clamp(num(D[p].lost), -N, left); scores[p] = lost; detail[p] = {lost}; });
+        const out = g.players.filter(p => livesLeft(g, p) > 0 && scores[p] >= livesLeft(g, p));
+        return {scores, detail, summary:out.length ? `<b>${esc(listNames(out))}</b> ${out.length > 1 ? 'are' : 'is'} out.` : ''}; },
+      cmp:(g, a, b) => (livesLeft(g, b.pid) - livesLeft(g, a.pid)) || (outAt(g, b.pid) - outAt(g, a.pid)),
+      big:(g, pid) => `${Math.max(0, livesLeft(g, pid))}<svg class="heart-i" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${SYMS.heart}</svg>`,
+      sub:(g, pid) => livesLeft(g, pid) > 0 ? `${livesLeft(g, pid)} of ${N} ${(livesLeft(g, pid) === 1 ? lwS : lw).toLowerCase()} left` : `Out in ${unit} ${outAt(g, pid)}`,
+      progress:(g, pid) => Math.max(0, livesLeft(g, pid)) / N,
+      end(g){ if(!g.rounds.length) return null; const alive = g.players.filter(p => livesLeft(g, p) > 0);
+        if(alive.length === 1) return {msg:`${pname(alive[0])} is the last one standing.`}; if(!alive.length) return {msg:'Everyone is out.'}; return null; },
+      disp:v => v > 0 ? '−' + v : v < 0 ? '+' + (-v) : '·',
+      totalDisp:(g, p) => `${Math.max(0, livesLeft(g, p))} left`,
+      stats(pid, gs){ const R = drC(pid, gs); if(!R.length) return null; const games = new Set(R.map(x => x.g)).size;
+        const firstOut = [...new Set(R.map(x => x.g))].filter(g => { const sd = sideOf(g, pid), o = outAt(g, sd); return o !== Infinity && g.players.every(q => q === sd || outAt(g, q) >= o); }).length;
+        return [{label:`${lw} lost per game`, v:R.reduce((a, x) => a + Math.max(0, x.s), 0) / games, f:1, best:'low'}, {label:'First out', v:firstOut, best:'low'}, {label:`${pluralWord(unit)} survived`, v:R.filter(x => x.s <= 0).length, best:'high'}]; },
+      score:[[`Each player starts with`, `${N} ${lw.toLowerCase()}`], [`Out at`, `0 ${lw.toLowerCase()}`], ['Winner', 'Last one standing']],
+      tally:[`After each ${U}, add the ${lw.toLowerCase()} each player lost. Use − to give one back.`, 'Players who are out drop off the score sheet. The last one standing wins.']};
+  }
+  if(k === 'bid'){
+    const b = t.bid || {base:10, per:1, pen:0};
+    return {...base, noQuick:true,
+      fields:() => [{k:'bid', type:'step', min:0, max:20, w:'half', label:'Bid'}, {k:'tricks', type:'step', min:0, max:20, w:'half', label:'Won'}],
+      compute(g, D){ const scores = {}, detail = {}; let sb = 0;
+        g.players.forEach(p => { const bd = num(D[p].bid), tr = num(D[p].tricks); sb += bd; scores[p] = bd === tr ? b.base + b.per * tr : -b.pen * Math.abs(bd - tr); detail[p] = {bid:bd, tricks:tr}; });
+        return {scores, detail, summary:`Bids total <b>${sb}</b>.`}; },
+      cell:ENGINES.wizard.cell,
+      stats(pid, gs){ const R = drC(pid, gs); if(!R.length) return null; const made = R.filter(x => x.d.bid === x.d.tricks).length;
+        return [{label:'Bid accuracy', v:made / R.length, f:'%', best:'high'}, {label:'Bids made', v:made, best:'high'}, {label:'Overbid', v:R.filter(x => x.d.tricks < x.d.bid).length, best:'low'}, {label:'Underbid', v:R.filter(x => x.d.tricks > x.d.bid).length, best:'low'}]; },
+      score:[['Exact bid', `${b.base}${b.per ? ` + ${b.per} per trick` : ''}`], ['Missed bid', b.pen ? `−${b.pen} per trick off` : '0']],
+      tally:[`After each ${U}, enter each player’s bid and how many they won.`, 'Green under a score means the bid was made.']};
+  }
+  // points (and games made before this update)
+  return {...base, kind:'points',
+    tally:[`After each ${U}, enter every player’s ${base.ptsWord.toLowerCase()}.`, `Tap any ${U} in the score sheet to change it.`]};
+}
+
+/* ======================================================================
+   ROUND TIMER
+   ====================================================================== */
+const TMR = {gid:null, total:0, left:0, endAt:0, run:false, iv:null, done:false};
+const fmtT = s => { s = Math.ceil(s); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+function resetTimer(gid, secs){ clearInterval(TMR.iv); Object.assign(TMR, {gid, total:secs, left:secs, run:false, done:false, iv:null}); }
+function timerCard(g, secs, unit){
+  if(TMR.gid !== g.id || TMR.total !== secs) resetTimer(g.id, secs);
+  const label = TMR.done ? 'Time\u2019s up!' : TMR.run ? 'Running' : TMR.left < TMR.total ? 'Paused' : 'Timer';
+  return `<div class="timer-card ${TMR.done ? 'up' : ''} ${TMR.run ? 'run' : ''}" id="tmCard"><div class="tm-ring" id="tmRing" style="--p:${(TMR.left / TMR.total).toFixed(4)}"><span id="tmTime">${fmtT(TMR.left)}</span></div><div class="grow"><div class="t1" id="tmLabel">${label}</div><div class="t2">${fmtT(TMR.total)} per ${unit.toLowerCase()}</div></div><button class="pill" data-a="tmgo">${TMR.run ? 'Pause' : TMR.done ? 'Again' : TMR.left < TMR.total ? 'Resume' : 'Start'}</button><button class="tool-btn" data-a="tmreset" aria-label="Reset timer"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5"/></svg></button></div>`;
+}
+function timerTick(){
+  TMR.left = Math.max(0, (TMR.endAt - Date.now()) / 1000);
+  const tt = $('#tmTime'), ring = $('#tmRing');
+  if(tt) tt.textContent = fmtT(TMR.left); if(ring) ring.style.setProperty('--p', (TMR.left / TMR.total).toFixed(4));
+  if(TMR.left <= 0){ clearInterval(TMR.iv); TMR.run = false; TMR.done = true; sfx('alarm'); buzz([200, 100, 200, 100, 300]); render(); }
+}
+function timerGo(){
+  if(TMR.run){ clearInterval(TMR.iv); TMR.run = false; TMR.left = Math.max(0, (TMR.endAt - Date.now()) / 1000); render(); return; }
+  if(TMR.done){ TMR.left = TMR.total; TMR.done = false; }
+  TMR.endAt = Date.now() + TMR.left * 1000; TMR.run = true; clearInterval(TMR.iv); TMR.iv = setInterval(timerTick, 200); render(); sfx('step');
+}
+
+/* ======================================================================
+   CREATE A GAME — the builder
+   ====================================================================== */
+const crDefault = () => ({edit:null, locked:false, name:'', color:GAME_COLORS[0], sym:'cards', logo:null, iconTab:'symbol', kind:'points', low:false, end:'target', val:'100',
+  items:[{id:'i' + uid().slice(0, 5), name:'', type:'count', val:1}], multi:false, winBy:'first', winN:'3', series:false, orderN:'5', placePts:'10, 6, 4, 3, 2, 1', lives:3,
+  bidN:'10', bidBase:'10', bidPer:'1', bidPen:'0', min:2, max:6, teams:false, deal:false, timer:0, words:{round:'Round', pts:'Points', lives:'Lives'},
+  needs:{keys:[], extra:[]}, rules:{goal:'', setup:'', play:'', end:''}, share:CM.state === 'ready' && CM.canWrite, extraDraft:''});
+function openCreate(){ ui.cr = crDefault(); ui.tab = 'games'; ui.stack.push({type:'create'}); go(); }
+function openEdit(t){
+  const c = crDefault(), w = t.words || {};
+  Object.assign(c, {edit:t.id, name:t.name, color:t.color, sym:t.sym || 'cards', logo:t.logo || null, iconTab:t.logo ? 'logo' : 'symbol', kind:t.kind || 'points', low:!!t.low,
+    end:t.target != null ? 'target' : t.rounds ? 'rounds' : 'none', val:String(t.target ?? t.rounds ?? ''), items:(t.items && t.items.length ? t.items : c.items).map(x => ({...x})),
+    multi:!!t.multi, winBy:t.kind === 'wins' && !t.target ? 'most' : 'first', winN:String(t.target ?? t.rounds ?? 3), series:(t.rounds || 1) > 1, orderN:String(t.rounds || 5),
+    placePts:(t.placePts || [10, 6, 4, 3, 2, 1]).join(', '), lives:t.lives || 3, bidN:String(t.rounds || 10), bidBase:String((t.bid || {}).base ?? 10), bidPer:String((t.bid || {}).per ?? 1), bidPen:String((t.bid || {}).pen ?? 0),
+    min:t.min || 2, max:t.max || 6, teams:!!t.teams, deal:!!t.deal, timer:t.timer || 0, words:{round:w.round || 'Round', pts:w.pts || 'Points', lives:w.lives || 'Lives'},
+    needs:{keys:((t.needs || {}).keys || []).slice(), extra:((t.needs || {}).items || []).slice()},
+    rules:t.rules ? {...t.rules} : {goal:'', setup:'', play:t.rulesText || '', end:''}, share:!!(t.community && t.by && t.by === CM.me)});
+  c.locked = S.games.some(g => g.tid === t.id);
+  ui.cr = c; closeSheet(); ui.tab = 'games'; ui.stack.push({type:'create'}); go();
+}
+const crIcon = (c, cls = 'lg') => c.logo ? `<span class="gicon logo ${cls}" style="background:${c.color}"><img src="${c.logo}" alt=""></span>` : `<span class="gicon sym ${cls}" style="background:${c.color}">${symSvg(c.sym, c.color)}</span>`;
+const stepper = (a, v, lbl) => `<div class="stepper"><button type="button" data-a="${a}:-1" aria-label="Less ${esc(lbl)}">−</button><input type="text" readonly value="${esc(v)}" aria-label="${esc(lbl)}"><button type="button" data-a="${a}:1" aria-label="More ${esc(lbl)}">+</button></div>`;
+const crInput = (id, val, ph, extra = '') => `<input class="field right cr-num" type="text" inputmode="numeric" id="${id}" value="${esc(val)}" placeholder="${esc(ph)}" autocomplete="off" ${extra}>`;
+function viewCreate(){
+  const c = ui.cr; if(!c) { ui.stack.pop(); return viewGames(); }
+  let h = navbar(c.edit ? 'Edit Game' : 'New Game', `<button class="nav-btn" data-a="crsave">${c.edit ? 'Save' : 'Create'}</button>`);
+  // 1 · look
+  h += `<div class="cr-hero"><div id="crIcon">${crIcon(c, 'xl')}</div><input class="cr-name" type="text" id="crName" placeholder="Name your game" value="${esc(c.name)}" maxlength="40" autocomplete="off" autocapitalize="words"></div>`;
+  h += `<div class="seg-wrap">${seg([['symbol','Symbol'],['logo','Your logo']], c.iconTab, 'cricon')}</div>`;
+  if(c.iconTab === 'symbol') h += `<div class="sym-grid">${Object.keys(SYMS).map(k => `<button class="sym-btn ${!c.logo && c.sym === k ? 'on' : ''}" data-a="crsym:${k}" aria-label="${k}" style="--c:${c.color}">${symSvg(k, 'var(--card)')}</button>`).join('')}</div>`;
+  else h += `<div class="group plain"><label class="row" for="crLogo" style="cursor:pointer"><span class="perk-ic">${ICON.camera}</span><div class="grow"><div class="t1 accent">${c.logo ? 'Change logo' : 'Upload a logo or photo'}</div><div class="t2">Square images look best</div></div></label>${c.logo ? `<button class="row" data-a="crlogorm"><div class="grow t1 danger">Remove logo</div></button>` : ''}</div><input type="file" id="crLogo" accept="image/*" hidden>`;
+  h += `<div class="swatches cr-sw">${GAME_COLORS.map(col => `<button class="sw ${col === c.color ? 'on' : ''}" style="background:${col}" data-a="crcolor:${col.slice(1)}" aria-label="Colour ${col}"></button>`).join('')}</div>`;
+  // 2 · scoring style
+  h += `<h2 class="sh">How is it scored?</h2>`;
+  if(c.locked) h += `<p class="hint">Games have been played with this scoring, so it can’t change. Everything else can.</p>`;
+  h += `<div class="kind-grid">${KINDS.map(([k, n, d, s]) => `<button class="kind ${c.kind === k ? 'on' : ''}" data-a="crkind:${k}" ${c.locked && c.kind !== k ? 'disabled' : ''} aria-pressed="${c.kind === k}"><span class="kind-ic">${symSvg(s, 'var(--tint)')}</span><b>${n}</b><span>${d}</span></button>`).join('')}</div>`;
+  h += `<div class="group plain cr-set">${kindSettings(c)}</div>`;
+  // 3 · players
+  h += `<h2 class="sh">Players</h2><div class="group plain"><div class="fgrid"><div class="frow half"><div class="fl">Fewest</div>${stepper('crstep:min', c.min, 'fewest players')}</div><div class="frow half"><div class="fl">Most</div>${stepper('crstep:max', c.max, 'most players')}</div></div>`
+    + switchRow('crTeams', 'Played in teams', 'Scores are kept per team. Each player still gets the win or loss.', c.teams)
+    + switchRow('crDeal', 'Someone deals each round', 'Tally shows whose turn it is to deal', c.deal) + `</div>`;
+  // 4 · words
+  h += `<h2 class="sh">Your Words</h2><div class="group plain">${wordRow('round', 'Each round is called', ['Round','Hand','Turn','Game','Match','Level'])}${c.kind === 'points' || c.kind === 'sheet' || (c.kind === 'order' && c.series) ? wordRow('pts', 'Points are called', ['Points','Coins','Chips','Goals','Stars','Runs']) : ''}${c.kind === 'lives' ? wordRow('lives', 'Lives are called', ['Lives','Hearts','Chips','Strikes']) : ''}</div>`;
+  // 5 · timer
+  h += `<h2 class="sh">Round Timer</h2>${seg([['0','Off'],['30','30 s'],['60','1 min'],['120','2 min'],['300','5 min']], String(c.timer), 'crtimer')}`;
+  // 6 · what you need
+  h += `<h2 class="sh">What You Need</h2><div class="eq-grid">${EQUIP.map(([k]) => `<button class="eq ${c.needs.keys.includes(k) ? 'on' : ''}" data-a="crneed:${k}" aria-pressed="${c.needs.keys.includes(k)}">${EQ[k].svg}<span>${esc(EQ[k].label)}</span></button>`).join('')}</div>`;
+  h += `<div class="group plain" style="margin-top:10px">${c.needs.extra.map((x, i) => `<div class="row"><div class="grow t1" style="white-space:normal">${esc(x)}</div><button class="link-btn danger" data-a="crxdel:${i}" aria-label="Remove ${esc(x)}">Remove</button></div>`).join('')}<div class="row"><input class="field" type="text" id="crExtra" placeholder="Add an item, e.g. Two decks with jokers" value="${esc(c.extraDraft)}" maxlength="80" autocomplete="off"><button class="add-btn" data-a="crxadd">Add</button></div></div>`;
+  // 7 · rules
+  h += `<h2 class="sh">Rules</h2><div class="rule-edit">${[['goal','Object of the game','How do you win?',2],['setup','Setup','What happens before you start? One step per line.',3],['play','How to play','What happens on a turn? One step per line.',5],['end','How it ends','When is the game over?',2]].map(([k, l, ph, r]) => `<label class="re-l" for="crR_${k}">${l}</label><textarea id="crR_${k}" data-rk="${k}" rows="${r}" maxlength="1500" placeholder="${ph}">${esc(c.rules[k])}</textarea>`).join('')}</div>`;
+  // 8 · share
+  const shareOk = CM.state === 'ready' && CM.canWrite;
+  h += `<div class="group" style="margin-top:22px"><button type="button" class="frow tog" data-a="crshare" ${shareOk ? '' : 'disabled'} aria-pressed="${c.share}"><div class="fl"><div>Share to the Game Library</div><div class="t2" style="white-space:normal">${shareOk ? 'Anyone using the app can find it and add it.' : 'Not available in this view. The game is saved on this phone.'}</div></div><span class="check ${c.share ? 'on' : ''}">${c.share ? '✓' : ''}</span></button></div>`;
+  h += `<div class="stackgap"><button class="btn primary" data-a="crsave">${c.edit ? 'Save Changes' : 'Create Game'}</button>${c.edit ? `<button class="btn danger" style="background:var(--card)" data-a="crdel">Delete Game</button>` : ''}</div>`;
+  return h;
+}
+function wordRow(k, label, opts){
+  const v = ui.cr.words[k];
+  return `<div class="row" style="display:grid;gap:8px"><div class="word-top"><label class="t1" for="crW_${k}">${label}</label><input class="field right" type="text" id="crW_${k}" data-wk="${k}" value="${esc(v)}" maxlength="16" autocomplete="off" autocapitalize="words"></div><div class="chips wrap">${opts.map(o => `<button class="chip sm ${o === v ? 'on' : ''}" data-a="crword:${k}:${o}">${o}</button>`).join('')}</div></div>`;
+}
+function kindSettings(c){
+  const ends = () => `<div class="row" style="display:grid;gap:8px"><div class="t1">Who wins?</div>${seg([['high','Highest score'],['low','Lowest score']], c.low ? 'low' : 'high', 'crlow')}</div>
+    <div class="row" style="display:grid;gap:8px"><div class="t1">The game ends</div>${seg([['target','At a score'],['rounds','After rounds'],['none','You decide']], c.end, 'crend')}</div>
+    ${c.end !== 'none' ? `<div class="row"><label class="grow" for="crVal">${c.end === 'rounds' ? 'Number of rounds' : c.low ? 'Ends when someone reaches' : 'First to reach'}</label>${crInput('crVal', c.val, c.end === 'rounds' ? '10' : '100')}</div>` : ''}`;
+  if(c.kind === 'points') return ends();
+  if(c.kind === 'sheet'){
+    let h = `<div class="row" style="display:grid;gap:4px"><div class="t1">Score sheet</div><div class="t2" style="white-space:normal">Each line is something players count or tick each round.</div></div>`;
+    h += c.items.map((it, i) => `<div class="row item-row" style="display:grid;gap:8px"><div class="word-top"><input class="field" type="text" id="crI_${i}" data-ik="${i}" placeholder="e.g. Cards played" value="${esc(it.name)}" maxlength="30" autocomplete="off">${c.items.length > 1 ? `<button class="link-btn danger" data-a="cridel:${i}" aria-label="Remove line">Remove</button>` : ''}</div>
+      ${seg([['count','Count'],['check','Yes / no'],['one','One player'],['pts','Points']], it.type, 'critype:' + i)}
+      ${it.type !== 'pts' ? `<div class="word-top"><span class="t2">${it.type === 'count' ? 'Points for each' : 'Worth'}</span>${stepper('crival:' + i, sgnv(it.val), 'points')}</div>` : ''}</div>`).join('');
+    h += `<button class="row" data-a="criadd"><div class="grow t1 accent">+ Add a line</div></button>`;
+    return h + ends();
+  }
+  if(c.kind === 'wins') return `<div class="row" style="display:grid;gap:8px"><div class="t1">Win the game by</div>${seg([['first','First to a number'],['most','Most after rounds']], c.winBy, 'crwinby')}</div>
+    <div class="row"><label class="grow" for="crWinN">${c.winBy === 'first' ? 'Round wins needed' : 'Number of rounds'}</label>${crInput('crWinN', c.winN, '3')}</div>${switchRow('crMulti', 'More than one can win a round', 'For games where rounds can be shared', c.multi)}`;
+  if(c.kind === 'order') return `<div class="row" style="display:grid;gap:8px"><div class="t1">Results</div>${seg([['one','One finishing order'],['series','Several rounds']], c.series ? 'series' : 'one', 'crseries')}</div>
+    ${c.series ? `<div class="row"><label class="grow" for="crOrdN">Number of rounds</label>${crInput('crOrdN', c.orderN, '5')}</div><div class="row" style="display:grid;gap:6px"><label class="t1" for="crPts">Points for 1st, 2nd, 3rd…</label><input class="field" type="text" id="crPts" inputmode="numeric" value="${esc(c.placePts)}" placeholder="10, 6, 4, 3, 2, 1" autocomplete="off"></div>` : ''}`;
+  if(c.kind === 'lives') return `<div class="row"><div class="grow t1">Starting lives</div>${stepper('crlives', c.lives, 'starting lives')}</div><div class="row"><div class="grow t2" style="white-space:normal">Players lose lives each round. When someone runs out they’re out. The last one standing wins.</div></div>`;
+  if(c.kind === 'bid') return `<div class="row"><label class="grow" for="crBidN">Number of rounds</label>${crInput('crBidN', c.bidN, '10')}</div>
+    <div class="row"><label class="grow" for="crBidBase">Bonus for an exact bid</label>${crInput('crBidBase', c.bidBase, '10')}</div>
+    <div class="row"><label class="grow" for="crBidPer">Plus, for each trick won</label>${crInput('crBidPer', c.bidPer, '1')}</div>
+    <div class="row"><label class="grow" for="crBidPen">Lose, per trick off (0 = nothing)</label>${crInput('crBidPen', c.bidPen, '0')}</div>`;
+  return '';
+}
+const posInt = (v, lo, hi) => { const n = parseInt(String(v).trim(), 10); return Number.isFinite(n) && n >= lo && n <= hi ? n : null; };
+function crToDef(){
+  const c = ui.cr, name = c.name.trim().replace(/\s+/g, ' ');
+  if(!name) return {err:'Give your game a name.'};
+  if(allTemplates().some(t => t.id !== c.edit && t.name.toLowerCase() === name.toLowerCase())) return {err:`There’s already a game called ${name}.`};
+  const d = {name, color:c.color, sym:c.sym, logo:c.logo || null, kind:c.kind, min:Math.min(c.min, c.max), max:Math.max(c.min, c.max), teams:c.teams, deal:c.deal && !c.teams, timer:c.timer,
+    words:{round:c.words.round.trim() || 'Round', pts:c.words.pts.trim() || 'Points', lives:c.words.lives.trim() || 'Lives'},
+    needs:{keys:c.needs.keys.slice(), items:c.needs.extra.slice()}, rules:{goal:c.rules.goal.trim(), setup:c.rules.setup.trim(), play:c.rules.play.trim(), end:c.rules.end.trim()},
+    low:false, target:null, rounds:null};
+  if(c.kind === 'points' || c.kind === 'sheet'){
+    d.low = c.low;
+    if(c.end !== 'none'){ const v = posInt(c.val, 1, c.end === 'rounds' ? 50 : 100000); if(v == null) return {err:c.end === 'rounds' ? 'Rounds should be 1 to 50.' : 'Enter the score that ends the game.'}; if(c.end === 'rounds') d.rounds = v; else d.target = v; }
+    if(c.kind === 'sheet'){ d.items = c.items.filter(it => it.name.trim()).map(it => ({id:it.id, name:it.name.trim(), type:it.type, val:it.val})); if(!d.items.length) return {err:'Add at least one line to the score sheet.'}; }
+  }
+  if(c.kind === 'wins'){ const v = posInt(c.winN, 1, 50); if(v == null) return {err:'Enter a number from 1 to 50.'}; if(c.winBy === 'first') d.target = v; else d.rounds = v; d.multi = c.multi; }
+  if(c.kind === 'order'){ d.rounds = 1; if(c.series){ const v = posInt(c.orderN, 2, 50); if(v == null) return {err:'Rounds should be 2 to 50.'}; d.rounds = v;
+      const pts = String(c.placePts).split(/[,\s]+/).filter(Boolean).map(Number); if(!pts.length || pts.some(x => !Number.isFinite(x))) return {err:'Place points should be numbers, like 10, 6, 4.'}; d.placePts = pts.slice(0, 20).map(Math.round); } }
+  if(c.kind === 'lives'){ d.lives = c.lives; d.low = true; }
+  if(c.kind === 'bid'){ const r = posInt(c.bidN, 1, 50), b = posInt(c.bidBase, 0, 1000), p = posInt(c.bidPer, 0, 1000), n = posInt(c.bidPen, 0, 1000);
+    if([r, b, p, n].includes(null)) return {err:'Bid scoring needs whole numbers.'}; d.rounds = r; d.bid = {base:b, per:p, pen:n}; }
+  return {d};
+}
+function saveBuilt(){
+  const c = ui.cr, res = crToDef(); if(res.err) return toast(res.err);
+  const d = res.d, old = c.edit ? S.customs.find(t => t.id === c.edit) : null;
+  d.gid = old ? (old.gid || old.id.slice(2)) : uid().replace(/[^a-z0-9]/g, ''); d.created = old ? (old.created || Date.now()) : Date.now();
+  const t = tplFrom(d, c.share ? CM.me : undefined); if(!c.share){ delete t.by; t.community = false; }
+  if(old) Object.keys(old).forEach(k => delete old[k]), Object.assign(old, t); else { S.customs.push(t); S.added.push(t.id); }
+  save();
+  if(c.share){
+    const cg = cleanGame(d), rest = CM.mine.games.filter(x => x.gid !== d.gid);
+    if(JSON.stringify([...rest, cg]).length > 230000){ toast('Your shared games are too big to publish. Try a smaller logo.'); }
+    else { CM.mine.games = [...rest, cg]; writeMine().then(ok => ok && toast(`${d.name} is in the Game Library`)); }
+  } else if(old && CM.mine.games.some(x => x.gid === d.gid)){ CM.mine.games = CM.mine.games.filter(x => x.gid !== d.gid); writeMine(); }
+  ui.cr = null; ui.stack.pop();
+  if(!old) ui.stack = [];
+  go(); if(!c.share) toast(old ? 'Changes saved' : `${d.name} added to My Games`);
+}
+// Logos are cropped square and kept small so they can be shared
+function loadLogo(file){
+  if(!file || !file.type.startsWith('image/')) return toast('That file isn’t an image');
+  const url = URL.createObjectURL(file), img = new Image();
+  img.onload = () => {
+    const side = Math.min(img.naturalWidth, img.naturalHeight), size = 128, cv = document.createElement('canvas'); cv.width = cv.height = size;
+    const x = cv.getContext('2d'); x.fillStyle = ui.cr.color; x.fillRect(0, 0, size, size);
+    x.drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, size, size);
+    URL.revokeObjectURL(url); ui.cr.logo = cv.toDataURL('image/jpeg', .8); render();
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); toast('Couldn’t open that image.'); };
+  img.src = url;
+}
+function deleteCustom(id){
+  const t = S.customs.find(x => x.id === id); if(!t) return;
+  const played = S.games.some(g => g.tid === id);
+  confirmSheet(`Delete ${t.name}?`, played ? 'Games already played stay in everyone’s stats. The game is removed from My Games and the library.' : 'It will be removed from My Games and the library.', 'Delete Game', () => {
+    if(!played) S.customs = S.customs.filter(x => x.id !== id); else t.hidden = true;
+    S.added = S.added.filter(x => x !== id);
+    if(CM.mine.games.some(x => x.gid === (t.gid || id.slice(2)))){ CM.mine.games = CM.mine.games.filter(x => x.gid !== (t.gid || id.slice(2))); writeMine(); }
+    save(); ui.cr = null; ui.stack = []; go(); toast('Game deleted');
+  });
 }
 
 /* ======================================================================
@@ -2395,7 +3029,8 @@ const switchRow = (id, label, sub, on) => `<div class="row"><label class="grow" 
 function viewSettings(){
   const s = SET();
   let h = `<header class="lt"><h1>Settings</h1></header>`;
-  h += `<button class="pro-card" data-a="pro"><span class="pro-badge">${ICON.crown}</span><span class="grow"><b>Tally Pro</b><span>Unlimited custom games, replays of every game and cloud backup</span></span>${ICON.chev}</button>`;
+  h += accountCard();
+  h += `<button class="pro-card" data-a="pro"><span class="pro-badge">${ICON.crown}</span><span class="grow"><b>Tally Pro</b><span>Unlimited custom games, replays of every game and no ads</span></span>${ICON.chev}</button>`;
   h += `<h2 class="sh">Appearance</h2><div class="seg-wrap">${seg([['system','Automatic'],['light','Light'],['dark','Dark']], s.theme, 'theme')}</div><p class="hint">Automatic matches your phone’s setting.</p>`;
   h += `<h2 class="sh">Game Defaults</h2><div class="group plain">`
     + `<div class="row" style="display:grid;gap:8px"><div class="t1">Scoring for featured games</div>${seg([['detail','Detailed'],['quick','Totals only']], s.quick ? 'quick' : 'detail', 'defq')}</div>`
@@ -2412,12 +3047,144 @@ function viewSettings(){
     + `<button class="row" data-a="resetSample"><div class="grow t1 accent">Load Sample Data</div></button>`
     + `<button class="row" data-a="eraseAll"><div class="grow t1 danger">Erase All Data</div></button>`
     + `</div><input type="file" id="restoreFile" accept="application/json,.json" hidden>`
-    + `<p class="foot">${S.sample ? 'You’re looking at sample players and games so you can explore. ' : ''}Everything is saved on this phone. Back up before you switch phones.</p>`;
+    + `<p class="foot">${S.sample ? 'You’re looking at sample players and games so you can explore. ' : ''}${acct() ? 'Your stats are backed up to your account. You can still save a copy to a file.' : 'Everything is saved on this phone. Sign in, or back up to a file, before you switch phones.'}</p>`;
   h += `<h2 class="sh">About</h2><div class="group plain"><div class="row"><div class="grow t1">Version</div><span class="meta">0.6 prototype</span></div><div class="row"><div class="grow t1">Games</div><span class="meta">${allTemplates().length} available</span></div></div>`;
   h += `<p class="foot">Rules in Tally are plain-language summaries. Each game links to its official rulebook.</p>`;
   return h;
 }
 function setSetting(k, v){ SET()[k] = v; save(); if(k === 'theme') applyTheme(); if(k === 'awake') syncWake(); }
+
+/* ======================================================================
+   ACCOUNTS (preview) — shows how sign-in, sync and linked players would
+   work in the App Store version. Nothing leaves this phone.
+   ====================================================================== */
+const acct = () => S.account || null;
+const meId = () => acct() && player(acct().pid) ? acct().pid : null;
+function accountCard(){
+  const a = acct();
+  if(!a) return `<button class="acct-card" data-a="signin"><span class="acct-ic">${ICON.cloud}</span><span class="grow"><b>Sign in to Tally</b><span>Back up your stats, use them on any phone and link up with friends</span></span>${ICON.chev}</button>`;
+  const pid = meId();
+  return `<button class="acct-card" data-a="account">${pid ? avatar(pid) : avatarRaw(a.name, COLORS[0])}<span class="grow"><b>${esc(a.name)}</b><span class="sync-line"><i class="dot-ok"></i>Synced ${relTime(a.synced)}</span></span>${ICON.chev}</button>`;
+}
+function relTime(ts){
+  const m = Math.round((Date.now() - ts) / 6e4);
+  return m < 1 ? 'just now' : m < 60 ? `${m} min ago` : m < 1440 ? `${Math.round(m / 60)} h ago` : rel(ts).toLowerCase();
+}
+const previewNote = `<p class="foot preview-note">Preview: in this prototype, no account is created and nothing leaves this phone.</p>`;
+
+function openSignIn(){ ui.si = {step:'start', method:null, name:'', email:'', code:'', hide:true, pid:null}; openSheet(signInHtml()); }
+function signInHtml(){
+  const u = ui.si, back = u.step !== 'start' && u.step !== 'sync' && u.step !== 'done';
+  let h = `<div class="sheet-h"><div class="l">${back ? `<button data-a="siback">${ICON.back.replace('<svg','<svg width="11" height="17" style="vertical-align:-3px;margin-right:4px"')}Back</button>` : u.step === 'start' ? '<button data-a="closeSheet">Not Now</button>' : ''}</div><b></b><div class="r"></div></div>`;
+  if(u.step === 'start'){
+    h += `<div class="si-hero"><span class="acct-ic lg">${ICON.cloud}</span><h2>Keep your stats forever</h2><p>Sign in so every game, rating and record is saved to your account.</p></div>`;
+    h += `<div class="perks">${[[ICON.shield,'Never lose a game','Your stats are backed up automatically.'],[ICON.phone,'Use any phone','Sign in on a new phone and everything comes back.'],[ICON.people,'Link up with friends','Games you play on a friend’s phone count on your profile too.']].map(([i,t,d]) => `<div class="perk"><span class="perk-ic">${i}</span><div><b>${t}</b><span>${d}</span></div></div>`).join('')}</div>`;
+    h += `<div class="stackgap"><button class="btn sso-apple" data-a="sim:apple">Continue with Apple</button><button class="btn secondary" data-a="sim:email">${ICON.mail}Continue with Email</button></div>`;
+    h += `<p class="foot" style="text-align:center">You can keep using Tally without an account.</p>` + previewNote;
+  }
+  else if(u.step === 'apple'){
+    h += `<div class="si-hero sm"><h2>Continue with Apple</h2><p>In the App Store version, Apple’s own sign-in sheet appears here and asks for Face ID. For this preview, enter the name to use.</p></div>`;
+    h += `<div class="group plain"><div class="row"><input class="field" type="text" id="siName" placeholder="Your name" value="${esc(u.name)}" maxlength="24" autocomplete="off" autocapitalize="words"></div></div>`;
+    h += `<div class="group plain" style="margin-top:12px">${switchRow('siHide', 'Hide my email', 'Tally gets a private forwarding address instead of your real one', u.hide)}</div>`;
+    h += `<div class="stackgap"><button class="btn primary" data-a="sinext" id="siGo" ${u.name.trim() ? '' : 'disabled'}>Continue</button></div>` + previewNote;
+  }
+  else if(u.step === 'email'){
+    h += `<div class="si-hero sm"><h2>What’s your email?</h2><p>We’ll send a 6-digit code to sign you in. No password to remember.</p></div>`;
+    h += `<div class="group plain"><div class="row"><input class="field" type="email" id="siEmail" placeholder="you@example.com" value="${esc(u.email)}" autocomplete="off" inputmode="email" autocapitalize="off" spellcheck="false"></div></div>`;
+    h += `<div class="stackgap"><button class="btn primary" data-a="sinext" id="siGo" ${/^\S+@\S+\.\S+$/.test(u.email.trim()) ? '' : 'disabled'}>Send Code</button></div>` + previewNote;
+  }
+  else if(u.step === 'code'){
+    h += `<div class="si-hero sm"><h2>Enter the code</h2><p>Sent to ${esc(u.email.trim())}. In this preview, any 6 digits work.</p></div>`;
+    h += `<input class="code-in" type="text" id="siCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000" value="${esc(u.code)}" aria-label="6-digit code">`;
+    h += `<div class="stackgap"><button class="btn primary" data-a="sinext" id="siGo" ${/^\d{6}$/.test(u.code) ? '' : 'disabled'}>Verify</button></div>`;
+  }
+  else if(u.step === 'name'){
+    h += `<div class="si-hero sm"><h2>What should we call you?</h2><p>This is the name friends see when you link up.</p></div>`;
+    h += `<div class="group plain"><div class="row"><input class="field" type="text" id="siName" placeholder="Your name" value="${esc(u.name)}" maxlength="24" autocomplete="off" autocapitalize="words"></div></div>`;
+    h += `<div class="stackgap"><button class="btn primary" data-a="sinext" id="siGo" ${u.name.trim() ? '' : 'disabled'}>Continue</button></div>`;
+  }
+  else if(u.step === 'link'){
+    h += `<div class="si-hero sm"><h2>Which player are you?</h2><p>Your games and rating move to your account, so they follow you to any phone.</p></div>`;
+    h += `<div class="group">${S.players.map(p => `<button class="row" data-a="sipick:${p.id}" aria-pressed="${u.pid === p.id}">${avatar(p.id)}<div class="grow"><div class="t1">${esc(p.name)}</div><div class="t2">${plural(playerStats(p.id).played, 'game')}</div></div><span class="check ${u.pid === p.id ? 'on' : ''}">${u.pid === p.id ? '✓' : ''}</span></button>`).join('')}
+      <button class="row" data-a="sipick:new" aria-pressed="${u.pid === 'new'}"><span class="avatar" style="background:var(--fill);color:var(--accent)">${ICON.plus.replace('<svg','<svg width="16" height="16"')}</span><div class="grow t1">I’m not on the list yet</div><span class="check ${u.pid === 'new' ? 'on' : ''}">${u.pid === 'new' ? '✓' : ''}</span></button></div>`;
+    h += `<div class="stackgap"><button class="btn primary" data-a="sinext" ${u.pid ? '' : 'disabled'}>Continue</button></div>`;
+  }
+  else if(u.step === 'sync'){
+    const n = S.games.length, pl = S.players.length;
+    h += `<div class="si-hero"><span class="spinner" aria-hidden="true"></span><h2>Backing up your stats</h2><p id="siProg">Uploading ${plural(pl, 'player')} and ${plural(n, 'game')}…</p></div><div class="rp-bar" style="margin:0 20px"><i id="siBar" style="width:0"></i></div>`;
+  }
+  else if(u.step === 'done'){
+    const pid = meId();
+    h += `<div class="si-hero"><span class="done-ic">✓</span><h2>You’re all set${acct() ? ', ' + esc(acct().name.split(' ')[0]) : ''}</h2><p>Your stats are backed up and will sync whenever you have signal.</p></div>`;
+    if(pid) h += `<div class="group"><div class="row">${avatar(pid)}<div class="grow"><div class="t1">${esc(pname(pid))}</div><div class="t2">Linked to your account</div></div><span class="you">You</span></div></div>`;
+    h += `<div class="stackgap"><button class="btn primary" data-a="closeSheet">Done</button></div>`;
+  }
+  return h;
+}
+function siNext(){
+  const u = ui.si;
+  if(u.step === 'apple' || u.step === 'name'){ if(!u.name.trim()) return; u.step = 'link'; u.pid = (S.players.find(p => p.name.toLowerCase() === u.name.trim().toLowerCase()) || {}).id || null; }
+  else if(u.step === 'email'){ if(!/^\S+@\S+\.\S+$/.test(u.email.trim())) return toast('Enter a full email address'); u.step = 'code'; }
+  else if(u.step === 'code'){ if(!/^\d{6}$/.test(u.code)) return; u.step = 'name'; }
+  else if(u.step === 'link'){
+    if(!u.pid) return;
+    let pid = u.pid;
+    if(pid === 'new'){ pid = uid(); S.players.push({id:pid, name:u.name.trim(), color:COLORS[S.players.length % COLORS.length], created:Date.now()}); }
+    S.account = {name:u.name.trim(), email:u.method === 'apple' && u.hide ? null : u.email.trim() || null, method:u.method, pid, since:Date.now(), synced:Date.now()};
+    save(); u.step = 'sync'; redrawSheet(signInHtml()); runSync(() => { u.step = 'done'; redrawSheet(signInHtml()); render(); sfx('save'); });
+    return;
+  }
+  redrawSheet(signInHtml());
+  setTimeout(() => { const f = $('#siName') || $('#siEmail') || $('#siCode'); if(f && window.matchMedia('(pointer:fine)').matches) f.focus(); }, 50);
+}
+function siBack(){
+  const u = ui.si, prev = {apple:'start', email:'start', code:'email', name:'code', link:u.method === 'apple' ? 'apple' : 'name'}[u.step];
+  u.step = prev || 'start'; redrawSheet(signInHtml());
+}
+// A short pretend upload so the flow feels real
+function runSync(then){
+  let k = 0; const steps = ['Uploading players…', 'Uploading games…', 'Uploading ratings and records…', 'Finishing up…'];
+  const tick = () => {
+    const bar = $('#siBar') || $('#acBar'), prog = $('#siProg');
+    k++; if(bar) bar.style.width = Math.min(100, k * 25) + '%'; if(prog && steps[k - 1]) prog.textContent = steps[k - 1];
+    if(k < 4) setTimeout(tick, reduceMotion() ? 60 : 380); else setTimeout(() => { if(acct()){ S.account.synced = Date.now(); save(); } then && then(); }, reduceMotion() ? 60 : 380);
+  };
+  setTimeout(tick, 120);
+}
+
+/* the account page */
+function openAccount(){ openSheet(accountHtml()); }
+function accountHtml(){
+  const a = acct(), pid = meId(), others = S.players.filter(p => p.id !== pid), code = inviteCode();
+  let h = `<div class="sheet-h"><div class="l"></div><b>Account</b><div class="r"><button data-a="closeSheet">Done</button></div></div>`;
+  h += `<div class="hero" style="padding-top:6px">${pid ? avatar(pid, 'xl') : avatarRaw(a.name, COLORS[0], 'xl')}<h2>${esc(a.name)}</h2><p>${a.email ? esc(a.email) : 'Email hidden'} · Signed in with ${a.method === 'apple' ? 'Apple' : 'email'}</p></div>`;
+  h += `<div class="group plain"><div class="row"><span class="perk-ic sm">${ICON.cloud}</span><div class="grow"><div class="t1">Backup &amp; sync</div><div class="t2" id="acSync" style="white-space:normal">Last synced ${relTime(a.synced)} · ${plural(S.games.length, 'game')}</div></div><button class="pill ghost" data-a="syncnow" id="acSyncBtn">Sync Now</button></div><div class="rp-bar" style="margin:0 16px 10px" hidden id="acBarWrap"><i id="acBar" style="width:0"></i></div></div>`;
+  h += `<h2 class="sh">You</h2><div class="group">`;
+  h += pid ? `<button class="row" data-a="relink">${avatar(pid)}<div class="grow"><div class="t1">${esc(pname(pid))}</div><div class="t2">Your player · tap to change</div></div><span class="you">You</span></button>` : `<button class="row" data-a="relink"><div class="grow t1 accent">Choose which player is you</div>${ICON.chev}</button>`;
+  h += `</div>`;
+  h += `<h2 class="sh">Link Up with Friends</h2><div class="group plain"><div class="row"><div class="grow"><div class="t1">Your invite code</div><div class="t2" style="white-space:normal">Friends enter it to link their player to their own account</div></div><button class="code-chip" data-a="copycode">${code}</button></div></div>`;
+  if(others.length) h += `<div class="group" style="margin-top:10px">${others.slice(0, 8).map(p => `<div class="row">${avatar(p.id)}<div class="grow"><div class="t1">${esc(p.name)}</div><div class="t2">${p.linked ? 'Linked · their games sync to their phone' : 'Not linked yet'}</div></div>${p.linked ? '<span class="you ok">Linked</span>' : `<button class="pill ghost" data-a="invite:${p.id}">Invite</button>`}</div>`).join('')}</div>`;
+  h += `<p class="foot">When a friend links up, games you play together show up on both phones and count toward both ratings.</p>`;
+  h += `<div class="group plain" style="margin-top:22px"><button class="row" data-a="signout"><div class="grow t1 accent">Sign Out</div></button><button class="row" data-a="delacct"><div class="grow t1 danger">Delete Account</div></button></div>`;
+  h += `<p class="foot">Deleting your account removes it and its online backup for good. Games on this phone stay.</p>` + previewNote;
+  return h;
+}
+function inviteCode(){
+  const a = acct(); if(!a) return '';
+  let x = Math.abs([...(a.name + a.since)].reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 7));
+  const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let s = '';
+  for(let i = 0; i < 6; i++){ s += A[x % A.length]; x = Math.floor(x / A.length) + i * 7; }
+  return s.slice(0, 3) + '-' + s.slice(3);
+}
+async function copyText(t, msg){
+  try{ await navigator.clipboard.writeText(t); toast(msg); }catch(e){ toast(t); }
+}
+function openRelink(){
+  const pid = meId();
+  let h = `<div class="sheet-h"><div class="l"><button data-a="account">Back</button></div><b>Which Player Are You?</b><div class="r"></div></div><div class="group">`;
+  h += S.players.map(p => `<button class="row" data-a="setme:${p.id}">${avatar(p.id)}<div class="grow t1">${esc(p.name)}</div>${p.id === pid ? '<span class="check on">✓</span>' : ''}</button>`).join('');
+  redrawSheet(h + `</div>`);
+}
 
 /* Pro mockup */
 function openPro(){
@@ -2425,7 +3192,7 @@ function openPro(){
   openSheet(proHtml());
 }
 function proHtml(){
-  const rows = [['Score any game', '✓', '✓'], ['Featured game stats', '✓', '✓'], ['Custom games', '3', 'Unlimited'], ['Game replays', 'Latest game', 'Every game'], ['Insights history', '30 days', 'All time'], ['Backup', 'This phone', 'Cloud sync'], ['Ads', 'Small banner', 'None']];
+  const rows = [['Score any game', '✓', '✓'], ['Featured game stats', '✓', '✓'], ['Custom games', '3', 'Unlimited'], ['Game replays', 'Latest game', 'Every game'], ['Insights history', '30 days', 'All time'], ['Account & sync', '✓', '✓'], ['Ads', 'Small banner', 'None']];
   let h = `<div class="sheet-h"><div class="l"></div><b></b><div class="r"><button data-a="closeSheet">Close</button></div></div>`;
   h += `<div class="pro-hero"><span class="pro-badge lg">${ICON.crown}</span><h2>Tally Pro</h2><p>For the friends who keep score seriously.</p></div>`;
   h += `<div class="tbl-wrap"><table class="pro-tbl"><thead><tr><th></th><th>Free</th><th>Pro</th></tr></thead><tbody>${rows.map(([a,b,c]) => `<tr><th>${a}</th><td>${b}</td><td class="hi">${c}</td></tr>`).join('')}</tbody></table></div>`;
@@ -2487,6 +3254,8 @@ const SFX = {
   save:() => { tone(660, .09); tone(990, .12, .07); },
   step:() => tone(520, .05, 0, 'sine', .04),
   lead:() => { tone(784, .1, 0, 'triangle'); tone(1047, .16, .09, 'triangle'); },
+  splash:() => { tone(260, .1, 0, 'sawtooth', .05); tone(130, .45, .05, 'triangle', .1); tone(90, .5, .12, 'sine', .08); },
+  alarm:() => { [0, .28, .56].forEach(w => tone(880, .2, w, 'square', .08)); tone(660, .5, .9, 'square', .07); },
   win:() => { [523, 659, 784, 1047].forEach((f, i) => tone(f, .2, i * .11, 'triangle', .12)); tone(1319, .5, .46, 'triangle', .1); }
 };
 const sfx = name => { if(SET().sound && SFX[name]) SFX[name](); };
@@ -2523,10 +3292,36 @@ function replayData(g){
     P.forEach(p => { const s = rd.scores[p] || 0; d[p] = s; cum[p] += s; if(rd.detail && rd.detail[p] && rd.detail[p].made) done[p]++; });
     snap(i + 1, d);
   });
-  let maxGap = 1;
-  frames.forEach(f => { const top = Math.max(...P.map(p => f.v[p])); P.forEach(p => maxGap = Math.max(maxGap, top - f.v[p])); });
-  // position: the leader is at r/R of the way; everyone else trails by their gap
-  frames.forEach(f => { const top = Math.max(...P.map(p => f.v[p])), prog = f.r / R; f.pos = {}; P.forEach(p => f.pos[p] = prog * (1 - .62 * Math.min(1, (top - f.v[p]) / maxGap))); });
+  // ---- where everyone stands ----
+  // hang: lowest-score games and lives games. Players hang over lava; points (or lost lives) lower them.
+  // target: first to a score. Distance = how close you are to that score.
+  // pace: most points after the rounds. The leader sets the pace and crosses the line on the last round;
+  //       everyone else is behind in proportion to their points.
+  const mode = (E.kind === 'lives' || (g.low && g.tid !== 'phase10')) ? 'hang' : g.tid === 'phase10' ? 'phase' : (!g.low && g.target != null) ? 'target' : 'pace';
+  if(mode === 'hang'){
+    const N = g.lives || 3, maxTot = Math.max(1, ...frames.flatMap(f => P.map(p => f.tot[p])));
+    const scale = E.kind === 'lives' ? N : g.target != null ? Math.max(1, g.target) : maxTot;
+    frames.forEach(f => { f.depth = {}; f.out = {}; P.forEach(p => { f.depth[p] = clamp(f.tot[p] / scale, -.25, 1); if(E.kind === 'lives' && f.tot[p] >= N) f.out[p] = true; }); });
+  } else {
+    frames.forEach((f, i) => {
+      f.pos = {};
+      if(mode === 'phase') P.forEach(p => f.pos[p] = f.phase[p] / 10);
+      else if(mode === 'target') P.forEach(p => f.pos[p] = f.tot[p] / g.target);
+      else {
+        const top = Math.max(...P.map(p => f.tot[p])), lead = P.filter(p => f.tot[p] === top);
+        let leadX = f.r / R;
+        // If the leader lost points this round, they hold their spot instead of moving up
+        if(i && lead.every(p => f.delta[p] < 0)) leadX = Math.min(leadX, Math.max(...lead.map(p => frames[i - 1].pos[p])));
+        if(top > 0) P.forEach(p => f.pos[p] = leadX * f.tot[p] / top);
+        else { const spread = Math.max(1, ...frames.flatMap(x => P.map(p => Math.abs(x.tot[p])))); P.forEach(p => f.pos[p] = leadX - (top - f.tot[p]) / spread); }
+        // A round that loses points never moves you forward
+        if(i) P.forEach(p => { if(f.delta[p] < 0) f.pos[p] = Math.min(f.pos[p], frames[i - 1].pos[p]); });
+      }
+      P.forEach(p => f.pos[p] = Math.min(f.pos[p], 1.08));
+    });
+    const lastF = frames[frames.length - 1];
+    standings(g).filter(r => r.place === 1).forEach(r => lastF.pos[r.pid] = Math.max(lastF.pos[r.pid], 1.06));
+  }
   // callouts
   const avgAbs = g.rounds.reduce((s, rd) => s + P.reduce((a, p) => a + Math.abs(rd.scores[p] || 0), 0), 0) / (R * P.length) || 1;
   frames.forEach((f, i) => {
@@ -2544,28 +3339,32 @@ function replayData(g){
   });
   const last = frames[frames.length - 1];
   const st = standings(g); last.call = `${listNames(st.filter(r => r.place === 1).map(r => r.pid))} win${st.filter(r => r.place === 1).length > 1 ? '' : 's'}!`;
-  if(isLava(g)){
+  if(mode === 'hang'){
+    const lives = E.kind === 'lives', lw = (E.livesWord || 'Lives').toLowerCase(), lw1 = lw.replace(/ies$/, 'y').replace(/s$/, '');
     frames.forEach((f, i) => {
-      const prev = frames[i - 1], worst = i && P.slice().sort((a, b) => f.delta[b] - f.delta[a])[0];
-      if(i && f.delta[worst] >= avgAbs * 2 && f.delta[worst] > 0) f.hit = worst;
-      if(i === 0) f.call = 'The lava is rising. Every point brings it closer.';
-      else if(i === R) return;
-      else if(f.lead) f.call = `${pname(f.leaders[0])} pulls away from the lava!`;
-      else if(f.hit) f.call = `${pname(f.hit)} gets scorched: +${f.delta[f.hit]}`;
-      else if(/clean 0/.test(f.call || '')) f.call = `${pname(P.find(p => f.delta[p] === 0))} keeps cool with a 0.`;
-      else if(f.leaders.length > 1) f.call = `${listNames(f.leaders)} are neck and neck.`;
-      else f.call = `${pname(f.leaders[0])} is furthest from the lava.`;
+      if(i === 0){ f.call = lives ? `Everyone starts with ${g.lives || 3} ${lw}. Run out and you drop.` : 'Every point lowers you toward the lava.'; return; }
+      if(i === R) return;
+      const prev = frames[i - 1], newOut = lives ? P.filter(p => f.out[p] && !prev.out[p]) : [];
+      const worst = P.slice().sort((a, b) => f.delta[b] - f.delta[a])[0];
+      if(newOut.length) f.call = `${listNames(newOut)} ${newOut.length > 1 ? 'fall' : 'falls'} into the lava!`;
+      else if(f.lead) f.call = `${pname(f.leaders[0])} is hanging highest now!`;
+      else if(lives && f.delta[worst] > 0){ f.hit = worst; const l = P.filter(p => f.delta[p] > 0); f.call = l.length > 1 ? `${listNames(l)} each drop lower.` : `${pname(worst)} loses ${f.delta[worst] === 1 ? 'a ' + lw1 : f.delta[worst] + ' ' + lw}.`; }
+      else if(!lives && f.delta[worst] >= avgAbs * 2 && f.delta[worst] > 0){ f.hit = worst; f.call = `${pname(worst)} slips down: +${f.delta[worst]}`; }
+      else if(/clean 0/.test(f.call || '')) f.call = `${pname(P.find(p => f.delta[p] === 0))} holds steady with a 0.`;
+      else if(f.leaders.length > 1) f.call = `${listNames(f.leaders)} are hanging level.`;
+      else f.call = `${pname(f.leaders[0])} is hanging highest.`;
     });
-    last.call = `${listNames(st.filter(r => r.place === 1).map(r => r.pid))} escape${st.filter(r => r.place === 1).length > 1 ? '' : 's'} the lava!`;
+    last.call = 'Hold on…';
   }
   // Phase 10 leads are about phases, not points
   if(g.tid === 'phase10') frames.forEach(f => { if(/leads by/.test(f.call || '')) f.call = `${pname(f.leaders[0])} is out in front on Phase ${Math.min(10, f.phase[f.leaders[0]] + 1)}.`; });
-  return {frames, R, st};
+  return {frames, R, st, mode};
 }
 
-const RP = {timer:null, i:0, data:null, gid:null, then:null};
+const RP = {timer:null, timers:[], i:0, data:null, gid:null, then:null};
 function openReplay(gid, then){
   const g = S.games.find(x => x.id === gid); if(!replayable(g)) return then && then();
+  RP.timers.forEach(clearTimeout); RP.timers = []; clearTimeout(RP.hide);
   RP.gid = gid; RP.then = then || null; RP.data = replayData(g); RP.i = 0;
   const el = $('#replay'); el.hidden = false; el.innerHTML = replayShell(g);
   document.body.classList.add('noscroll');
@@ -2582,50 +3381,88 @@ function stepReplay(){
   if(f.lead){ sfx('lead'); buzz(12); } else sfx('step');
   RP.timer = setTimeout(stepReplay, f.lead ? stepMs() + 450 : stepMs());
 }
-const isLava = g => g.low && g.tid !== 'phase10';
+const isLava = g => (g.low && g.tid !== 'phase10') || eng(g).kind === 'lives';
 function replayShell(g){
-  const t = tmpl(g.tid), lava = isLava(g);
-  return `<div class="rp-top"><div class="grow"><div class="eyebrow">${esc(t.name)} · ${lava ? 'Escape the Lava' : 'The Race'}</div><div class="rp-round" id="rpRound"></div></div><button class="rp-skip" data-a="rpskip">Skip</button></div>
-    <div class="rp-stage" id="rpStage" style="--ms:${stepMs()}ms">${raceStage(g)}</div>
+  const t = tmpl(g.tid), hang = RP.data.mode === 'hang';
+  return `<div class="rp-top"><div class="grow"><div class="eyebrow">${esc(t.name)} · ${hang ? 'Over the Lava' : 'The Race'}</div><div class="rp-round" id="rpRound"></div></div><button class="rp-skip" data-a="rpskip">Skip</button></div>
+    <div class="rp-stage" id="rpStage" style="--ms:${stepMs()}ms">${hang ? hangStage(g) : raceStage(g)}</div>
     <div class="rp-call" id="rpCall" aria-live="polite"></div>
-    <div class="rp-bar ${lava ? 'hot' : ''}"><i id="rpBar"></i></div>
+    <div class="rp-bar ${hang ? 'hot' : ''}"><i id="rpBar"></i></div>
     <div class="rp-end" id="rpEnd" hidden><button class="btn secondary" data-a="rpagain">Watch Again</button><button class="btn primary" data-a="rpdone">Continue</button></div>`;
 }
 function tokenHtml(pid){
   return `<div class="tok" data-pid="${pid}"><span class="tok-score" data-score="${pid}">0</span>${avatar(pid)}<span class="tok-name">${esc(pname(pid))}</span></div>`;
 }
+const LEFT_ARROW = '<svg viewBox="0 0 10 12" width="9" height="11" aria-hidden="true"><path d="M8.5 1L2 6l6.5 5z" fill="currentColor"/></svg>';
 function raceStage(g){
-  const n = g.players.length, lane = n > 5 ? 54 : 66, lava = isLava(g);
-  const lanes = g.players.map(p => `<div class="lane">${tokenHtml(p)}</div>`).join('');
-  if(!lava) return `<div class="track" style="--lane:${lane}px">${lanes}<div class="finish" aria-hidden="true"></div><div class="startline" aria-hidden="true"></div></div>`;
-  const bubbles = Array.from({length:9}, (_, k) => `<i style="top:${(8 + k * 10.5).toFixed(1)}%;animation-delay:${(k * .37 % 2).toFixed(2)}s;--s:${6 + (k * 5) % 9}px"></i>`).join('');
-  return `<div class="track lava-track" style="--lane:${lane}px"><div class="lava" id="rpLava" aria-hidden="true"><div class="bubbles">${bubbles}</div></div>${lanes}<div class="safe" aria-hidden="true"><span>SAFE</span></div></div>`;
+  const n = g.players.length, lane = n > 5 ? 54 : 66;
+  return `<div class="track ${n > 5 ? 'sm' : ''}" style="--lane:${lane}px">${g.players.map(p => `<div class="lane">${tokenHtml(p)}<div class="offarrow" data-off="${p}" hidden>${LEFT_ARROW}<span>${esc(pname(p).split(' ')[0])}</span><b data-offs="${p}"></b></div></div>`).join('')}</div>`;
 }
+function hangStage(g){
+  const n = g.players.length;
+  const bubbles = Array.from({length:10}, (_, k) => `<i style="left:${(6 + k * 9.5).toFixed(1)}%;top:${30 + (k * 23) % 50}%;animation-delay:${(k * .41 % 2.2).toFixed(2)}s;--s:${5 + (k * 5) % 8}px"></i>`).join('');
+  return `<div class="hang ${n > 5 ? 'sm' : ''}"><div class="beam" aria-hidden="true"></div>
+    ${g.players.map((p, i) => `<div class="hp" data-pid="${p}" style="--cx:${((i + .5) / n * 100).toFixed(2)}%"><i class="rope"></i>${tokenHtml(p)}</div>`).join('')}
+    <div class="pool" aria-hidden="true"><div class="pool-surf"></div><div class="bubbles">${bubbles}</div></div></div>`;
+}
+const scoreText = (g, f, p) => g.tid === 'phase10' ? `Ph ${Math.min(10, f.phase[p] + 1)}` : eng(g).kind === 'lives' ? `${Math.max(0, (g.lives || 3) - f.tot[p])} ♥` : fmt(f.tot[p]);
 function drawFrame(i, instant){
-  const g = S.games.find(x => x.id === RP.gid), f = RP.data.frames[i], E = eng(g), unit = E.unit || 'Round', R = RP.data.R, P = g.players;
+  const g = S.games.find(x => x.id === RP.gid), f = RP.data.frames[i], E = eng(g), unit = E.unit || 'Round', R = RP.data.R, P = g.players, hang = RP.data.mode === 'hang';
   const stage = $('#rpStage'); if(!stage) return;
   stage.classList.toggle('instant', !!instant || reduceMotion());
   $('#rpRound').textContent = i === 0 ? 'Ready…' : i === R ? 'Final result' : `${unit} ${i} of ${R}`;
   $('#rpBar').style.width = (i / R * 100) + '%';
-  const call = $('#rpCall'); call.textContent = f.call || ''; call.classList.remove('pop'); void call.offsetWidth; call.classList.add('pop'); call.classList.toggle('lead', !!f.lead || i === R);
+  const call = $('#rpCall'); call.textContent = f.call || ''; call.classList.remove('pop'); void call.offsetWidth; call.classList.add('pop'); call.classList.toggle('lead', !!f.lead || (i === R && !hang));
   P.forEach(p => {
     const tok = stage.querySelector(`.tok[data-pid="${p}"]`); if(!tok) return;
-    tok.classList.toggle('leading', i > 0 && f.leaders.includes(p));
-    tok.classList.toggle('winner', i === R && RP.data.st.find(r => r.pid === p).place === 1);
-    tok.style.setProperty('--x', f.pos[p].toFixed(4));
+    tok.classList.toggle('leading', i > 0 && f.leaders.includes(p) && !(hang && f.out[p]));
+    tok.classList.toggle('winner', !hang && i === R && RP.data.st.find(r => r.pid === p).place === 1);
     if(f.hit === p && !instant){ tok.classList.remove('hit'); void tok.offsetWidth; tok.classList.add('hit'); }
-    const sc = stage.querySelector(`[data-score="${p}"]`);
-    if(sc) sc.textContent = g.tid === 'phase10' ? `Ph ${Math.min(10, f.phase[p] + 1)}` : fmt(f.tot[p]);
+    const sc = stage.querySelector(`[data-score="${p}"]`); if(sc) sc.textContent = scoreText(g, f, p);
+    if(hang){
+      const hp = tok.parentElement, was = hp.classList.contains('fell');
+      hp.style.setProperty('--ty', (22 + f.depth[p] * 40).toFixed(2) + '%');
+      hp.classList.toggle('fell', !!f.out[p]);
+      if(f.out[p] && !was && !instant) dropFx(p, hp);
+    } else {
+      tok.style.setProperty('--x', f.pos[p].toFixed(4));
+      // Below zero: the player runs off the left edge and an arrow shows where they went
+      const off = stage.querySelector(`[data-off="${p}"]`), os = stage.querySelector(`[data-offs="${p}"]`);
+      if(off){ off.hidden = f.pos[p] > -.03; if(os) os.textContent = scoreText(g, f, p); }
+    }
   });
-  // The lava creeps up behind the last player
-  const lava = $('#rpLava');
-  if(lava) lava.style.setProperty('--lx', Math.min(...P.map(p => f.pos[p])).toFixed(4));
 }
-function finishReplay(){
-  clearTimeout(RP.timer); RP.i = RP.data.frames.length - 1; drawFrame(RP.i);
-  $('#rpEnd').hidden = false; $('.rp-skip').hidden = true;
+function dropFx(p, hp){
+  sfx('splash'); buzz(30);
+  RP.timers.push(setTimeout(() => {
+    const st = $('#rpStage .hang'); if(!st) return;
+    const sp = document.createElement('div'); sp.className = 'splash'; sp.style.left = hp.style.getPropertyValue('--cx');
+    sp.innerHTML = '<i></i><i></i><i></i><i></i><i></i>'; st.appendChild(sp); setTimeout(() => sp.remove(), 900);
+  }, reduceMotion() ? 0 : 520));
+}
+function endReplayUI(){
+  $('#rpEnd').hidden = false; const sk = $('.rp-skip'); if(sk) sk.hidden = true;
   sfx('win'); buzz([20, 60, 30]);
   if(!reduceMotion()) confetti();
+}
+function finishReplay(){
+  clearTimeout(RP.timer); RP.timers.forEach(clearTimeout); RP.timers = [];
+  RP.i = RP.data.frames.length - 1; drawFrame(RP.i);
+  if(RP.data.mode !== 'hang') return endReplayUI();
+  // Everyone but the winner lets go, worst first
+  const last = RP.data.frames[RP.i], W = RP.data.st.filter(r => r.place === 1).map(r => r.pid);
+  const losers = RP.data.st.filter(r => !W.includes(r.pid) && !last.out[r.pid]).map(r => r.pid).reverse();
+  const gap = reduceMotion() ? 60 : 480, stage = $('#rpStage');
+  losers.forEach((p, k) => RP.timers.push(setTimeout(() => {
+    const hp = stage && stage.querySelector(`.hp[data-pid="${p}"]`); if(!hp) return;
+    stage.classList.remove('instant'); hp.classList.add('fell'); dropFx(p, hp);
+    $('#rpCall').textContent = `${pname(p)} falls in!`;
+  }, 650 + k * gap)));
+  RP.timers.push(setTimeout(() => {
+    W.forEach(p => { const tok = stage && stage.querySelector(`.tok[data-pid="${p}"]`); if(tok) tok.classList.add('winner'); });
+    const call = $('#rpCall'); if(call){ call.textContent = `${listNames(W)} survive${W.length > 1 ? '' : 's'} the lava!`; call.classList.add('lead'); }
+    endReplayUI();
+  }, 650 + losers.length * gap + 600));
 }
 function confetti(){
   const stage = $('#rpStage'); if(!stage) return;
@@ -2635,9 +3472,9 @@ function confetti(){
   stage.appendChild(box); setTimeout(() => box.remove(), 2600);
 }
 function closeReplay(goOn){
-  clearTimeout(RP.timer);
+  clearTimeout(RP.timer); RP.timers.forEach(clearTimeout); RP.timers = [];
   const el = $('#replay'); el.classList.remove('on'); document.body.classList.remove('noscroll');
-  setTimeout(() => { el.hidden = true; el.innerHTML = ''; }, reduceMotion() ? 0 : 220);
+  RP.hide = setTimeout(() => { el.hidden = true; el.innerHTML = ''; }, reduceMotion() ? 0 : 220);
   const fn = RP.then; RP.then = null;
   if(goOn && fn) fn();
 }
